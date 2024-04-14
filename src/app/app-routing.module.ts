@@ -41,7 +41,7 @@ const routes: Routes = [
   },
   {
     path: 'add-inventory-storeroom',
-    loadChildren: () => import('./storeroom/add-inventory-storeroom/add-inventory-storeroom.module').then( m => m.AddInventoryStoreroomPageModule)
+    loadChildren: () => import('./storerom pages/add-inventory-storeroom/add-inventory-storeroom.module').then( m => m.AddInventoryStoreroomPageModule)
   },
   {
     path: 'user-profiles',
@@ -58,7 +58,8 @@ const routes: Routes = [
   {
     path: 'welcome',
     loadChildren: () => import('./welcome/welcome.module').then( m => m.WelcomePageModule)
-  },  {
+  },
+  {
     path: 'profile',
     loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
   },
@@ -68,11 +69,27 @@ const routes: Routes = [
   },
   {
     path: 'storeroom',
-    loadChildren: () => import('./storeroom/storeroom.module').then( m => m.StoreroomPageModule)
+    loadChildren: () => import('./storerom pages/storeroom/storeroom.module').then( m => m.StoreroomPageModule)
   },
   {
     path: 'barcode-scanner',
     loadChildren: () => import('./barcode-scanner/barcode-scanner.module').then( m => m.BarcodeScannerPageModule)
+  },
+  {
+    path: 'choose',
+    loadChildren: () => import('./choose/choose.module').then( m => m.ChoosePageModule)
+  },
+  {
+    path: 'storeroom-deshboard',
+    loadChildren: () => import('./storerom pages/storeroom-deshboard/storeroom-deshboard.module').then( m => m.StoreroomDeshboardPageModule)
+  },
+  {
+    path: 'analytic-store',
+    loadChildren: () => import('./storerom pages/analytic-store/analytic-store.module').then( m => m.AnalyticStorePageModule)
+  },
+  {
+    path: 'analytic-shop',
+    loadChildren: () => import('./analytic-shop/analytic-shop.module').then( m => m.AnalyticShopPageModule)
   },
 
 

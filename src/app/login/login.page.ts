@@ -60,9 +60,16 @@ export class LoginPage implements OnInit {
       return;
     }
 
+//     'lines'
+// 'lines-small'
+// 'dots'
+// 'bubbles'
+// 'circular'
+// 'crescent'
     const loader = await this.loadingController.create({
-      message: 'Logging in...',
+      // message: 'Logging in...',
       cssClass: 'custom-loader-class',
+      spinner:"dots"
     });
     await loader.present();
 
@@ -96,7 +103,7 @@ export class LoginPage implements OnInit {
           .then((userCredential) => {
             loader.dismiss();
             const user = userCredential.user;
-            this.router.navigate(['/home']);
+            this.router.navigate(['/choose']);
           })
           .catch((error) => {
             loader.dismiss();

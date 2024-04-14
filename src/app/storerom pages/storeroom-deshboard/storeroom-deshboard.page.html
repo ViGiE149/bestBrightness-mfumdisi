@@ -1,19 +1,13 @@
 <ion-header>
-  <ion-toolbar color="primary">
+ 
+  <ion-toolbar >
     <ion-icon style="font-size: 30px; font-weight: bolder;"  stot="start" routerLink="/choose" slot="end" name="arrow-back-outline"></ion-icon>
-    <ion-title>Best Brightness Dashboard</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="presentConfirmationAlert()">
-        <ion-icon slot="icon-only" name="power-outline"></ion-icon>
-      </ion-button>
-    </ion-buttons>
+    <ion-title>Storeroom Dashboard</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content class="ion-padding" >
-
-
-  <ion-card (click)="navigateToAddInventory()">
+<ion-content>
+  <ion-card routerLink="/add-inventory-storeroom">
     <ion-card-header>
       <ion-card-title  >Add Inventory</ion-card-title>
     </ion-card-header>
@@ -22,7 +16,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card routerLink="/view">
+  <ion-card routerLink="/storeroom">
     <ion-card-header>
       <ion-card-title  >View Inventory</ion-card-title>
     </ion-card-header>
@@ -31,7 +25,7 @@
     </ion-card-content>
   </ion-card>
 
-  <ion-card routerLink="/analytic-shop">
+  <ion-card >
     <ion-card-header>
       <ion-card-title>Analytics</ion-card-title>
     </ion-card-header>
@@ -49,8 +43,3 @@
     </ion-card-content>
   </ion-card>
 </ion-content>
-
-
-
-
-

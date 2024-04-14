@@ -1,0 +1,49 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Analytics-shop</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <!-- Monthly Sales Chart -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Monthly Sales</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <canvas id="monthly-sales-chart" width="400" height="200"></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Top Products List -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>type or products</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+   <h1>{{this.uniqueBarcodesCount}}</h1>
+       
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>users</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+   <h1>{{this.uniqueBarcodesCount}}</h1>
+       
+    </ion-card-content>
+  </ion-card >
+<div>
+<ion-label>Category</ion-label>
+  <ion-card color="light" *ngFor="let item of inventoryByCategory | keyvalue">
+    <ion-card-header>
+      {{ item.key }}
+    </ion-card-header>
+    <ion-card-content>
+      Quantity: {{ item.value }}
+    </ion-card-content>
+  </ion-card>
+</div>
+  
+</ion-content>

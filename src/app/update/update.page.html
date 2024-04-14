@@ -1,31 +1,23 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-title>Update Inventory</ion-title>
-    <ion-icon style="font-size: 30px; font-weight: bolder;"  routerLink="/view" slot="end" name="arrow-back-outline"></ion-icon>
+  <ion-toolbar color="primary">
+    <ion-buttons slot="start">
+      <ion-button routerLink="/view">
+        <ion-icon slot="icon-only" name="arrow-back"></ion-icon>
+      </ion-button>
+    </ion-buttons>
+    <ion-title class="ion-text-center custom-title">Update Inventory</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content class="ion-padding custom-content">
+  <div class="container">
+
   <ion-grid>
-    <ion-item>
-      <ion-toggle labelPlacement="end" [(ngModel)]="toggleChecked">Type barcode</ion-toggle>
-    </ion-item>
-
-
-    <ion-item>
-      <ion-label position="floating">Barcode</ion-label>
-      <ion-input type="text" [(ngModel)]="barcode" *ngIf="toggleChecked"></ion-input>
-      <ion-button  expand="block" (click)="scanBarcode()" *ngIf="!toggleChecked">
-        <ion-icon name="barcode-outline"></ion-icon> Scan
-      </ion-button>
-    </ion-item>
-
-
     <ion-row>
       <ion-col size="12">
         <ion-item>
-          <ion-label position="floating">Item Name</ion-label>
-          <ion-input [(ngModel)]="itemName" type="text"></ion-input>
+          <ion-label class="custom-label">Type Barcode</ion-label>
+          <ion-toggle slot="end" [(ngModel)]="toggleChecked"></ion-toggle>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -33,8 +25,23 @@
     <ion-row>
       <ion-col size="12">
         <ion-item>
-          <ion-label position="floating">Category</ion-label>
-          <ion-input [(ngModel)]="itemCategory" type="text"></ion-input>
+          <ion-label position="floating" class="custom-label">Barcode</ion-label>
+          <ion-input [(ngModel)]="barcode" type="text" *ngIf="toggleChecked" class="custom-input"></ion-input>
+          <ion-button size="defualt"  expand="block" color="secondary" (click)="scanBarcode()" *ngIf="!toggleChecked" class="custom-scan-button">
+            <ion-icon name="scan-outline"></ion-icon>
+            Scan
+          </ion-button>
+        </ion-item>
+      </ion-col>
+    </ion-row>
+    
+
+    <!-- Item Details -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-item>
+          <ion-label position="floating" class="custom-label">Item Name</ion-label>
+          <ion-input [(ngModel)]="itemName" type="text" class="custom-input"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -42,8 +49,8 @@
     <ion-row>
       <ion-col size="12">
         <ion-item>
-          <ion-label position="floating">Description</ion-label>
-          <ion-textarea [(ngModel)]="itemDescription"></ion-textarea>
+          <ion-label position="floating" class="custom-label">Category</ion-label>
+          <ion-input [(ngModel)]="itemCategory" type="text" class="custom-input"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -51,8 +58,8 @@
     <ion-row>
       <ion-col size="12">
         <ion-item>
-          <ion-label position="floating">Quantity</ion-label>
-          <ion-input [(ngModel)]="itemQuantity" type="number"></ion-input>
+          <ion-label position="floating" class="custom-label">Description</ion-label>
+          <ion-textarea [(ngModel)]="itemDescription" class="custom-input"></ion-textarea>
         </ion-item>
       </ion-col>
     </ion-row>
@@ -60,22 +67,31 @@
     <ion-row>
       <ion-col size="12">
         <ion-item>
-          <img class="thumbnail" src="{{newImage}}" alt="{{  itemName }} ">
+          <ion-label position="floating" class="custom-label">Quantity</ion-label>
+          <ion-input [(ngModel)]="itemQuantity" type="number" class="custom-input"></ion-input>
         </ion-item>
       </ion-col>
     </ion-row>
 
-
-    <ion-button  expand="block" id="fileInput" color="medium" class="custom-file-input" (click)="takePicture()">
-      <ion-icon name="camera"></ion-icon>
-      Take Picture
-    </ion-button >
-
-
+    <!-- Image -->
     <ion-row>
       <ion-col size="12">
-        <ion-button expand="block" (click)="updateItem()">Update</ion-button>
+        <ion-item lines="none">
+          <img [src]="newImage" alt="{{ itemName }}" class="custom-image" *ngIf="newImage">
+        </ion-item>
+        <ion-button expand="block" color="secondary" class="custom-file-input" (click)="takePicture()">
+          <ion-icon slot="start" name="camera"></ion-icon>
+          Take Picture
+        </ion-button>
+      </ion-col>
+    </ion-row>
+
+    <!-- Update Button -->
+    <ion-row>
+      <ion-col size="12">
+        <ion-button expand="block" color="success" class="custom-update-button" (click)="updateItem()">Update</ion-button>
       </ion-col>
     </ion-row>
   </ion-grid>
+</div>
 </ion-content>

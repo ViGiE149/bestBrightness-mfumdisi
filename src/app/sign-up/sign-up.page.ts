@@ -50,8 +50,9 @@ export class SignUpPage implements OnInit {
       return;
     }
     const loader = await this.loadingController.create({
-      message: '|Registering you...',
-      cssClass: 'custom-loader-class'
+      // message: '|Registering you...',
+      cssClass: 'custom-loader-class',
+      spinner:"dots"
     });
    
      
