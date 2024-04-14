@@ -42,6 +42,7 @@ export class UpdatePage implements OnInit {
   ngOnInit() {
     this.getPassedData();
   }
+  
   hideCard() {
     const cardElement = document.getElementById('container');
     if (cardElement) {
