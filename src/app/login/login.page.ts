@@ -96,8 +96,8 @@ export class LoginPage implements OnInit {
     // Since email is unique, there should be only one document in the query snapshot
     const userData = userQuerySnapshot.docs[0].data();
 
-    if (userData) {
-      if (userData['status'] === 'active') {
+
+   
         this.auth
           .signInWithEmailAndPassword(this.email, this.password)
           .then((userCredential) => {
@@ -114,21 +114,11 @@ export class LoginPage implements OnInit {
               this.presentToast(errorMessage, 'danger');
             }
           });
-      } else if (userData['status'] === 'denied') {
-        loader.dismiss();
-        this.presentToast('You are not allowed in the system', 'danger');
-      } else if (userData['status'] === 'pending') {
-        loader.dismiss();
-        this.presentToast(
-          'Your account is pending. Please wait for admin approval.',
-          'warning'
-        );
-        // Redirect to profile page
-        this.router.navigate(['/profile']);
-      } else {
-        loader.dismiss();
-        this.presentToast('You are not allowed in the system', 'danger');
-      }
-    }
-  }
+
+      } 
+      
+       
+ 
+  
+  
 }
