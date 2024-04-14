@@ -75,6 +75,45 @@ export class AddInventoryStoreroomPage implements OnInit {
     return snapshot.ref.getDownloadURL();
   }
   
+  async searchProductByBarcode() {
+    if (this.barcode.trim() === '') {
+      // If the barcode input is empty, clear other input fields
+      this.clearFieldsExceptBarcode();
+      return;
+    }
+  
+    // Search for the product with the entered barcode in Firestore
+    const querySnapshot = await this.firestore
+      .collection('storeroomInventory')
+      .ref.where('barcode', '==', this.barcode.trim())
+      .limit(1)
+      .get();
+  
+    if (!querySnapshot.empty) {
+      // If a product with the entered barcode is found, populate the input fields
+      const productData:any = querySnapshot.docs[0].data();
+      this.itemName = productData.name;
+      this.itemCategory = productData.category;
+      this.itemDescription = productData.description;
+      // You can similarly populate other input fields here
+    } else {
+      // If no product with the entered barcode is found, clear other input fields
+      this.clearFieldsExceptBarcode();
+      this.presentToast('Product not found', 'warning');
+    }
+  }
+  
+  clearFieldsExceptBarcode() {
+    // Clear all input fields except the barcode input
+    this.itemName = '';
+    this.itemCategory = '';
+    this.itemDescription = '';
+    // Clear other input fields here
+  }
+  
+
+
+  
   hideCard() {
     const cardElement = document.getElementById('container');
     if (cardElement) {
@@ -92,18 +131,16 @@ showCard() {
     // if the result has content
     this.showCard()
     
-    const yourDiv = document.querySelector('container')?.remove;
+   
     window.document.querySelector('ion-app')?.classList.remove('cameraView');
     document.querySelector('body')?.classList.remove('scanner-active');
    
   }
 
   async scanBarcode() {
-    this.hideCard();
-   
+ 
     window.document.querySelector('ion-app')?.classList.add('cameraView');
-    // Target the container
-
+    this.hideCard();
     document.querySelector('body')?.classList.add('scanner-active');
     await BarcodeScanner.checkPermission({ force: true });
     // make background of WebView transparent
@@ -112,14 +149,33 @@ showCard() {
     const result = await BarcodeScanner.startScan(); // start scanning and wait for a result
     // if the result has content
     if (result.hasContent) {
-      this.showCard();
       this.barcode = result.content;
-      console.log(result.content); // log the raw scanned content
+      console.log(result.content);
+      
+      this.showCard();
+      
+      const querySnapshot = await this.firestore
+      .collection('storeroomInventory')
+      .ref.where('barcode', '==', result.content)
+      .limit(1)
+      .get();
+      window.document.querySelector('ion-app')?.classList.remove('cameraView');
       document.querySelector('body')?.classList.remove('scanner-active');
+    if (!querySnapshot.empty) {
+      // If a product with the same barcode is found, populate the input fields
+      
+      const productData:any = querySnapshot.docs[0].data();
+      this.itemName = productData.name;
+      this.itemCategory = productData.category;
+      this.itemDescription = productData.description;
+   
+      // You can similarly populate other input fields here
+    } else {
+      this.presentToast('Product not found', 'warning');
+    }// log the raw scanned content
       window.document.querySelector('ion-app')?.classList.remove('cameraView');
     }
   }
-  
   toggleMode() {
     if (this.toggleChecked) {
       this.barcode = ''; // Clear the barcode value when switching to input mode

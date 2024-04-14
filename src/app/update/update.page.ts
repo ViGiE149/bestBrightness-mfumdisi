@@ -41,7 +41,6 @@ export class UpdatePage implements OnInit {
 
   ngOnInit() {
     this.getPassedData();
-    document.querySelector('body')?.classList.remove('scanner-active'); 
   }
   hideCard() {
     const cardElement = document.getElementById('container');
@@ -52,7 +51,7 @@ export class UpdatePage implements OnInit {
 showCard() {
     const cardElement = document.getElementById('container');
     if (cardElement) {
-      this.renderer.setStyle(cardElement, 'display', 'none'); // Use Renderer2's setStyle()
+      this.renderer.setStyle(cardElement, 'display', 'contents'); // Use Renderer2's setStyle()
     }
   }
   async closeScanner(){
@@ -61,19 +60,13 @@ showCard() {
     // if the result has content
   
     window.document.querySelector('ion-app')?.classList.remove('cameraView');
-      document.querySelector('body')?.classList.remove('scanner-active');
-    window.document.querySelector('ion-app')?.classList.remove('cameraView');
-    window.document.querySelector('ion-app')?.classList.remove('cameraView');
+    document.querySelector('body')?.classList.remove('scanner-active');
   }
 
   async scanBarcode() {
     this.hideCard();
    
     window.document.querySelector('ion-app')?.classList.add('cameraView');
-    const containerDiv = document.querySelector('.container'); // Target the container
-  if (containerDiv) {
-    containerDiv.classList.add('transparent-container');
-  }
     document.querySelector('body')?.classList.add('scanner-active');
     await BarcodeScanner.checkPermission({ force: true });
     // make background of WebView transparent
@@ -87,7 +80,6 @@ showCard() {
       this.showCard()
       window.document.querySelector('ion-app')?.classList.remove('cameraView');
       document.querySelector('body')?.classList.remove('scanner-active');
-      
     }
   }
 
@@ -150,6 +142,7 @@ await loader.present();
     this.itemDescription = '';
     this.itemQuantity = 0;
     this.imageUrl = '';
+    this.newImage='';
   }
   toggleMode() {
     if (this.toggleChecked) {
