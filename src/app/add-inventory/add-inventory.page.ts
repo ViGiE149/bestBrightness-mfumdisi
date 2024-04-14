@@ -302,12 +302,12 @@ export class AddInventoryPage implements OnInit {
       message: 'Generating Slip...',
     });
     await loader.present();
-
+  console.log("data",this.cart)
     try {
       // Create a slip document in Firestore
       const slipData = {
         date: new Date(),
-        items: this.cart.map((item) => ({
+        items: this.cart.map(item => ({
           name: item.name,
           quantity: item.quantity,
           category: item.category,
@@ -321,75 +321,84 @@ export class AddInventoryPage implements OnInit {
       };
       await this.firestore.collection('slips').add(slipData);
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
+     // Calculate column widths based on content length
 
-      // Define PDF content
+
+// Define PDF content
+// Define PDF content
+// Define PDF content
 const docDefinition = {
   content: [
-      {
-          text: 'BEST BRIGHT', // Adding the company name to the header
-          style: 'companyName'
-      },
-      {
-          text: 'Invoice',
-          style: 'header'
-      },
-      {
-          text: `Date: ${new Date().toLocaleDateString()}`,
-          style: 'subheader'
-      },
-      {
-          table: {
-              headerRows: 1,
-              widths: [ '75', '75', '75', '75', '75', '75' ],
-              body: [
-                  [
-                      { text: 'Name', style: 'tableHeader' },
-                      { text: 'Category', style: 'tableHeader' },
-                      { text: 'Description', style: 'tableHeader' },
-                      { text: 'Quantity', style: 'tableHeader' },
-                      { text: 'Picker\'s Details', style: 'tableHeader' },
-                      { text: 'Barcode', style: 'tableHeader' }
-                  ],
-                  ...this.cart.map(item => [
-                      item.name,
-                      item.category,
-                      item.description,
-                      item.quantity.toString(),
-                      item.pickersDetails,
-                      item.barcode
-                  ])
-              ]
-          }
+    {
+      text: 'BEST BRIGHT', // Adding the pickersDetailsPhone name to the header
+      style: 'companyName'
+    },
+    {
+      text: 'Invoice',
+      style: 'header'
+    },
+    {
+      text: `Date: ${new Date().toLocaleDateString()}`,
+      style: 'subheader'
+    },
+    {
+      table: {
+        headerRows: 1,
+        widths: [ '*', '*', '*', '*', '*', '*' ],
+        body: [
+          [
+            { text: 'Name', style: 'tableHeader' },
+            { text: 'Category', style: 'tableHeader' },
+            { text: 'Description', style: 'tableHeader' },
+            { text: 'Quantity', style: 'tableHeader' },
+            { text: 'Picker\'s Details', style: 'tableHeader' },
+            { text: 'Barcode', style: 'tableHeader' }
+          ],
+          ...this.cart.map(item => [
+            { text: item.name, alignment: 'left' }, // Align left
+            { text: item.category, alignment: 'center' }, // Align center
+            { text: item.description, alignment: 'left' }, // Align left
+            { text: item.quantity.toString(), alignment: 'center' }, // Align center
+            { text: item.pickersDetails, alignment: 'left' }, // Align left
+            { text: item.barcode, alignment: 'center' } // Align center
+          ])
+        ]
       }
+    }
   ],
   styles: {
-      header: {
-          fontSize: 24,
-          bold: true,
-          margin: [0, 0, 0, 10],
-          alignment: 'center',
-          color: '#007bff' // Blue color for the header
-      },
-      subheader: {
-          fontSize: 14,
-          bold: true,
-          margin: [0, 10, 0, 10]
-      },
-      tableHeader: {
-          bold: true,
-          fontSize: 12,
-          color: 'black',
-          alignment: 'center'
-      },
-      companyName: { // Style for the company name
-          fontSize: 28,
-          bold: true,
-          margin: [0, 0, 0, 20], // Adjust margin to separate company name from header
-          alignment: 'center',
-          color: '#dc3545' // Red color for the company name
-      }
+    header: {
+      fontSize: 24,
+      bold: true,
+      margin: [0, 0, 0, 10],
+      alignment: 'center',
+      color: '#4caf50' // Green color for the header
+    },
+    subheader: {
+      fontSize: 14,
+      bold: true,
+      margin: [0, 10, 0, 10],
+      alignment: 'center'
+    },
+    tableHeader: {
+      bold: true,
+      fontSize: 12,
+      color: '#37474f', // Dark grey color for the table headers
+      alignment: 'center'
+    },
+    companyName: { // Style for the company name
+      fontSize: 28,
+      bold: true,
+      margin: [0, 0, 0, 20], // Adjust margin to separate company name from header
+      alignment: 'center',
+      color: '#ff5722' // Deep orange color for the company name
+    }
   }
 };
+
+
+
+
 
     // Generate PDF
     //pdfMake.createPdf(docDefinition).open();
@@ -397,18 +406,21 @@ const docDefinition = {
       // Clear the cart after generating the slip
       pdfDocGenerator.open();
       this.cart = [];
-      // Clear the cart after generating the slip
-
-
+  
       // Show success toast notification
-      this.presentToast('Slip generated successfully',"successfull");
+      this.presentToast('Slip generated successfully',"success");
     } catch (error) {
       console.error('Error generating slip:', error);
       // Handle error
     } finally {
       loader.dismiss();
     }
-  }
+   
+    
+
+
+}
+
 
   clearFields() {
     this.itemName = '';
