@@ -41,8 +41,25 @@ export class UpdatePage implements OnInit {
     document.querySelector('body')?.classList.remove('scanner-active'); 
   }
 
+  async closeScanner(){
+    const result = await BarcodeScanner.stopScan(); // start scanning and wait for a result
+    // if the result has content
+  
+    
+    const yourDiv = document.querySelector('container')?.remove;
+    window.document.querySelector('ion-app')?.classList.remove('cameraView');
+      document.querySelector('body')?.classList.remove('scanner-active');
+    window.document.querySelector('ion-app')?.classList.remove('cameraView');
+    window.document.querySelector('ion-app')?.classList.remove('cameraView');
+  }
+
   async scanBarcode() {
+    const yourDiv = document.querySelector('container')?.remove;
     window.document.querySelector('ion-app')?.classList.add('cameraView');
+    const containerDiv = document.querySelector('.container'); // Target the container
+  if (containerDiv) {
+    containerDiv.classList.add('transparent-container');
+  }
     document.querySelector('body')?.classList.add('scanner-active');
     await BarcodeScanner.checkPermission({ force: true });
     // make background of WebView transparent
