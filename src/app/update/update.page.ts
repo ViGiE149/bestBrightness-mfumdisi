@@ -125,10 +125,17 @@ await loader.present();
         // Add timestamp });
         //console.log("Storeroom Inventory Updated (Plused)");
       });
+      this.clearAllFields();
       loader.dismiss();
     }
   }
-
+  clearAllFields() {
+    this.itemName = '';
+    this.itemCategory = '';
+    this.itemDescription = '';
+    this.itemQuantity = 0;
+    this.imageUrl = '';
+  }
   toggleMode() {
     if (this.toggleChecked) {
       this.barcode = ''; // Clear the barcode value when switching to input mode

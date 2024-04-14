@@ -94,10 +94,9 @@ export class LoginPage implements OnInit {
     }
 
     // Since email is unique, there should be only one document in the query snapshot
-    const userData = userQuerySnapshot.docs[0].data();
 
 
-   
+
         this.auth
           .signInWithEmailAndPassword(this.email, this.password)
           .then((userCredential) => {
@@ -109,16 +108,15 @@ export class LoginPage implements OnInit {
             loader.dismiss();
             const errorMessage = error.message;
             if (errorMessage.includes('wrong-password')) {
-              this.presentToast('Incorrect password', 'danger');
+              this.presentToast('Incorrect email or password', 'danger');
             } else {
               this.presentToast(errorMessage, 'danger');
             }
           });
-
-      } 
-      
+  
+        // Redirect to profile page
        
- 
-  
-  
+     
+    
+  }
 }
