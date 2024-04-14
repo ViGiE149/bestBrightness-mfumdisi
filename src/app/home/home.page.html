@@ -1,11 +1,10 @@
 <ion-header>
-  <ion-toolbar color="primary">
-    <ion-icon style="font-size: 30px; font-weight: bolder;"  stot="start" routerLink="/choose" slot="end" name="arrow-back-outline"></ion-icon>
+  <ion-toolbar color="success">
+    <ion-icon style="font-size: 30px; font-weight: bolder;"  slot="start" routerLink="/choose"  name="arrow-back-outline"></ion-icon>
     <ion-title>Best Brightness Dashboard</ion-title>
+    <ion-menu-button color="light" menu="main-menu" slot="end"></ion-menu-button>
     <ion-buttons slot="end">
-      <ion-button (click)="presentConfirmationAlert()">
-        <ion-icon slot="icon-only" name="power-outline"></ion-icon>
-      </ion-button>
+
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

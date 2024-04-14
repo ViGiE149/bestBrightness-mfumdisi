@@ -1,6 +1,11 @@
 
 <ion-content>
+  <ion-button routerLink="/choose" fill="clear" class="back-button">
+    <ion-icon name="arrow-back"></ion-icon>
+    <span>Back</span>
+  </ion-button>
   <div class="container">
+   
     <div class="card">
       <h1>Sign Up</h1>
 
@@ -19,6 +24,7 @@
           <select id="role" name="selectedRole" [(ngModel)]="selectedRole">
             <option value="Manager">Manager</option>
             <option value="Picker">Picker</option>
+            <option value="Picker">Admin</option>
           </select>
         </div>
 

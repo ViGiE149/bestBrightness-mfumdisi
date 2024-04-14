@@ -6,13 +6,18 @@
 
 <ion-content [fullscreen]="true">
   <div class="container">
-    <a routerLink="/storeroom-deshboard" class="card">
+    <ion-card routerLink="/storeroom-deshboard" class="card">
         <h2>Storeroom</h2>
         <p>Explore your collection</p>
-    </a>
-    <a routerLink="/home" class="card">
+    </ion-card >
+    <ion-card  routerLink="/home" class="card">
         <h2>Shop</h2>
-        <p>Discover new cards</p>
-    </a>
+        <p>Discover new stock</p>
+    </ion-card >
+    <ion-card  (click)=" navigateToAddUsers()" class="card">
+      <h2>Add Users</h2>
+      <p>Register new users</p>
+  </ion-card >
 </div>
+
 </ion-content>

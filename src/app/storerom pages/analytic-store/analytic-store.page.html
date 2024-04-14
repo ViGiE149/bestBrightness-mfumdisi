@@ -1,13 +1,57 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>analyticStore</ion-title>
+<ion-header>
+  <ion-toolbar color="primary" >
+    <ion-icon style="font-size: 30px; font-weight: bolder;"  stot="start" routerLink="/home" slot="end" name="arrow-back-outline"></ion-icon>
+    <ion-title>Analytics-storeroom</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">analyticStore</ion-title>
-    </ion-toolbar>
-  </ion-header>
+<ion-content>
+  <!-- Monthly Sales Chart -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Monthly Sales</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <canvas id="monthly-sales-chart" width="400" height="200"></canvas>
+    </ion-card-content>
+  </ion-card>
+
+  <!-- Top Products List -->
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>type or products</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+   <h1>{{this.uniqueBarcodesCount}}</h1>
+       
+    </ion-card-content>
+  </ion-card>
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>users</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+   <h1>{{this.uniqueBarcodesCount}}</h1>
+       
+    </ion-card-content>
+  </ion-card >
+<div>
+<ion-label>Category</ion-label>
+  <ion-card color="light" *ngFor="let item of inventoryByCategory | keyvalue">
+    <ion-card-header>
+      {{ item.key }}
+    </ion-card-header>
+    <ion-card-content>
+      Quantity: {{ item.value }}
+    </ion-card-content>
+  </ion-card>
+</div>
+<p class="pp">TOTAL PRODUCT QUANTITIES </p>
+<canvas id="quantityByCategoryChartx"></canvas>
+
+<p class="pp">TOTAL PRODUCT QUANTITIES </p>
+<canvas id="categoryComparisonCharttx"></canvas> <!-- Corrected canvas ID -->
+
+
 </ion-content>
+

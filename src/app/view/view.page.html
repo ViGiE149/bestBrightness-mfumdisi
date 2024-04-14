@@ -1,5 +1,5 @@
 <ion-header [translucent]="true" class="custom-header">
-  <ion-toolbar>
+  <ion-toolbar color="success">
     <ion-title class="header-title">Inventory</ion-title>
     <ion-buttons slot="end">
       <ion-button routerLink="/home">
@@ -108,8 +108,8 @@
         </ion-card-content>
       </ion-item>
   
-      <ion-item-options side="end">
-        <ion-item-option (click)="goToUpdate(item.name,item.category,item.description,item.quantity,item.barcode,item.pickersDetails,item.dateOfPickup,item.timeOfPickup ,item.imageUrl )" color="primary">
+      <ion-item-options  side="end">
+        <ion-item-option (click)="goToUpdate(item.name,item.category,item.description,item.quantity,item.barcode,item.pickersDetails,item.dateOfPickup,item.timeOfPickup ,item.imageUrl )" color="success" >
           <ion-icon name="create-outline"></ion-icon>
           Update
         </ion-item-option>

@@ -4,6 +4,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import {   ToastController , AlertController} from '@ionic/angular';
 import { first } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -14,7 +15,9 @@ export class HomePage {
   userDocument: any;
   navController: NavController;
 
-  constructor(  private alertController: AlertController
+
+  constructor( 
+    private router:Router, private alertController: AlertController
                ,private navCtrl: NavController,
               private auth: AngularFireAuth,
               private db: AngularFirestore,
@@ -142,7 +145,8 @@ export class HomePage {
          
           
           this.auth.signOut().then(() => {
-            this.navController.navigateForward("/login");
+            this.router.navigateByUrl("/login");
+
             this.presentToast()
       
       

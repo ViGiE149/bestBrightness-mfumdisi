@@ -1,5 +1,5 @@
 <ion-header [translucent]="true">
-  <ion-toolbar color="primary">
+  <ion-toolbar color="success">
     <ion-title >Add Inventory Store</ion-title>
     <ion-icon style="font-size: 30px; font-weight: bolder;"  routerLink="/home" slot="end" name="arrow-back-outline"></ion-icon>
   </ion-toolbar>
@@ -7,7 +7,7 @@
 
 <ion-content [fullscreen]="true"  class="custom-background">
   <ion-card>
-    <ion-card-header>
+    <ion-card-header color="success">
       Add Inventory Item
     </ion-card-header>
     <ion-card-content>
@@ -20,7 +20,7 @@
           <ion-col size="12">
             <ion-item>
               <ion-label class="custom-label">Type Barcode</ion-label>
-              <ion-menu-button menu="main-menu" slot="end"></ion-menu-button>
+             
               <ion-toggle slot="end" [(ngModel)]="toggleChecked"></ion-toggle>
             </ion-item>
           </ion-col>
@@ -76,14 +76,14 @@
         <ion-input type="time" [(ngModel)]="timeOfPickup"></ion-input>
       </ion-item>
     
-      <ion-button  expand="block" id="fileInput" color="medium" class="custom-file-input" (click)="takePicture()">
+      <ion-button color="primary"  expand="block" id="fileInput"  class="custom-file-input" (click)="takePicture()">
         <ion-icon name="camera"></ion-icon>
         Take Picture
       </ion-button >
 
 
 
-      <ion-button expand="block" (click)="addItem()">Add Item</ion-button>
+      <ion-button color="primary" expand="block" (click)="addItem()">Add Item</ion-button>
       <ion-button expand="block"  color="success" (click)="generateSlip()">DONE</ion-button>
     </ion-card-content>
   </ion-card>

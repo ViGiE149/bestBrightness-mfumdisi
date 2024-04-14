@@ -71,10 +71,7 @@ const routes: Routes = [
     path: 'storeroom',
     loadChildren: () => import('./storerom pages/storeroom/storeroom.module').then( m => m.StoreroomPageModule)
   },
-  {
-    path: 'barcode-scanner',
-    loadChildren: () => import('./barcode-scanner/barcode-scanner.module').then( m => m.BarcodeScannerPageModule)
-  },
+ 
   {
     path: 'choose',
     loadChildren: () => import('./choose/choose.module').then( m => m.ChoosePageModule)

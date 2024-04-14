@@ -4,6 +4,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { Router } from '@angular/router'; // Import Router
 import { LoadingController, NavController, ToastController, AlertController } from '@ionic/angular';
 import { ProfilePage } from '../profile/profile.page';
+import * as emailjs from 'emailjs-com';
 
 @Component({
   selector: 'app-sign-up',
@@ -70,7 +71,18 @@ export class SignUpPage implements OnInit {
           )
             .then(() => {
               loader.dismiss();
-
+              
+             const templateParams = {
+                admin : "admin",
+                subject: "Registration notification ",
+                message:"you are now registerd on the system the bestBrightness as a "+ this.selectedRole+" you can now login with :email-"+this.email +" password-"+this.password,
+            };
+              emailjs.send('service_iht2ej9', 'template_ma66v75', templateParams, 'sdec_-eHbbd95KUHJ')
+              .then(function(response) {
+                 console.log('SUCCESS!', response.status, response.text);
+              }, function(error) {
+                 console.log('FAILED...', error);
+              });
 
               console.log('User data added successfully');
               this.router.navigate(['/profile']);

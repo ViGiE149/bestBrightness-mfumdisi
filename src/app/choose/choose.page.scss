@@ -5,10 +5,12 @@ body {
 }
 
 .container {
-    display: flex;
+display: flex;
+flex-direction: column;
     justify-content: center;
     align-items: center;
     height: 100vh;
+    
 }
 
 .card {
@@ -37,3 +39,7 @@ body {
     font-size: 16px;
     margin: 0;
 }
+ion-toolbar {
+    --background: linear-gradient(to right, var(--ion-color-primary), var(--ion-color-success)); /* Adjust gradient colors and direction as needed */
+  }
+  

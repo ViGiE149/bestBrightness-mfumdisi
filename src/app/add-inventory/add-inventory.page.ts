@@ -10,7 +10,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
-import { BarcodeScannerPage } from '../barcode-scanner/barcode-scanner.page';
+
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 const pdfMake = require('pdfmake/build/pdfmake.js');
 

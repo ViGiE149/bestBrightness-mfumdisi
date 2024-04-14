@@ -1,6 +1,9 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController, ToastController } from '@ionic/angular';
+import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { AngularFireAuth } from '@angular/fire/compat/auth';
+
 
 @Component({
   selector: 'app-root',
@@ -8,7 +11,7 @@ import { AlertController, ToastController } from '@ionic/angular';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private alertController: AlertController,  private router:Router, private toastController: ToastController) {
+  constructor(    private auth: AngularFireAuth,private alertController: AlertController,  private router:Router, private toastController: ToastController) {
     this.sideMenu()
   }
 
@@ -70,13 +73,15 @@ export class AppComponent {
           handler: () => {
            
             
-          
-              //this.router.navigateByUrl("/login");
-             // this.presentToast()
-        
-        
-           
+            this.auth.signOut().then(() => {
+              this.router.navigateByUrl("/login");
+              this.presentToast()
 
+        
+        
+            }).catch((error) => {
+            
+            });
 
           }
         }
@@ -85,4 +90,15 @@ export class AppComponent {
     await alert.present();
   }
 
+  
+  async presentToast() {
+    const toast = await this.toastController.create({
+      message: 'SIGNED OUT!',
+      duration: 1500,
+      position: 'top',
+    
+    });
+
+    await toast.present();
+  }
 }
