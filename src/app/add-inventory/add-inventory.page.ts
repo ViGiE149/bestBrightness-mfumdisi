@@ -182,6 +182,9 @@ showCard() {
       window.document.querySelector('ion-app')?.classList.remove('cameraView');
     }
   }
+
+
+  
   toggleMode() {
     if (this.toggleChecked) {
       this.barcode = ''; // Clear the barcode value when switching to input mode
