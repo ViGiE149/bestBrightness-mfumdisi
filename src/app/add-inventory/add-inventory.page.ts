@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { finalize } from 'rxjs/operators';
@@ -41,6 +41,7 @@ export class AddInventoryPage implements OnInit {
   inventoryItems: any;;
 
   constructor(
+    private renderer: Renderer2,
     private modalController: ModalController,
     private firestore: AngularFirestore,
     private storage: AngularFireStorage,
@@ -80,14 +81,7 @@ export class AddInventoryPage implements OnInit {
     return snapshot.ref.getDownloadURL();
   }
 
-  async fetchInventoryItems() {
-    try {
-      const snapshot = await this.firestore.collection('inventory').ref.get();
-      this.inventoryItems = snapshot.docs.map((doc:any) => ({ id: doc.id, ...doc.data() }));
-    } catch (error) {
-      console.error('Error fetching inventory items:', error);
-    }
-  }
+ 
   
   async searchProductByBarcode() {
     if (this.barcode.trim() === '') {
@@ -132,20 +126,27 @@ export class AddInventoryPage implements OnInit {
     // if the result has content
   
     
-    const yourDiv = document.querySelector('container')?.remove;
+    this.showCard();
     window.document.querySelector('ion-app')?.classList.remove('cameraView');
-      document.querySelector('body')?.classList.remove('scanner-active');
-    window.document.querySelector('ion-app')?.classList.remove('cameraView');
-    window.document.querySelector('ion-app')?.classList.remove('cameraView');
+    document.querySelector('body')?.classList.remove('scanner-active');
   }
 
-  async scanBarcode() {
-    const yourDiv = document.querySelector('container')?.remove;
-    window.document.querySelector('ion-app')?.classList.add('cameraView');
-    const containerDiv = document.querySelector('.container'); // Target the container
-  if (containerDiv) {
-    containerDiv.classList.add('transparent-container');
+  hideCard() {
+    const cardElement = document.getElementById('container');
+    if (cardElement) {
+      this.renderer.setStyle(cardElement, 'display', 'none'); // Use Renderer2's setStyle()
+    }
   }
+showCard() {
+    const cardElement = document.getElementById('container');
+    if (cardElement) {
+      this.renderer.setStyle(cardElement, 'display', 'contents'); // Use Renderer2's setStyle()
+    }
+  }
+  async scanBarcode() {
+ 
+    window.document.querySelector('ion-app')?.classList.add('cameraView');
+    this.hideCard();
     document.querySelector('body')?.classList.add('scanner-active');
     await BarcodeScanner.checkPermission({ force: true });
     // make background of WebView transparent
@@ -157,16 +158,18 @@ export class AddInventoryPage implements OnInit {
       this.barcode = result.content;
       console.log(result.content);
       
-      
+      this.showCard();
       
       const querySnapshot = await this.firestore
       .collection('storeroomInventory')
       .ref.where('barcode', '==', result.content)
       .limit(1)
       .get();
-
+      window.document.querySelector('ion-app')?.classList.remove('cameraView');
+      document.querySelector('body')?.classList.remove('scanner-active');
     if (!querySnapshot.empty) {
       // If a product with the same barcode is found, populate the input fields
+      
       const productData:any = querySnapshot.docs[0].data();
       this.itemName = productData.name;
       this.itemCategory = productData.category;

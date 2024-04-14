@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Renderer2 } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
 import { finalize } from 'rxjs/operators';
@@ -38,6 +38,7 @@ export class AddInventoryStoreroomPage implements OnInit {
 
 
   constructor(
+    private renderer: Renderer2,
     private firestore: AngularFirestore,
     private storage: AngularFireStorage,
     private loadingController: LoadingController,
@@ -74,26 +75,35 @@ export class AddInventoryStoreroomPage implements OnInit {
     return snapshot.ref.getDownloadURL();
   }
   
-
+  hideCard() {
+    const cardElement = document.getElementById('container');
+    if (cardElement) {
+      this.renderer.setStyle(cardElement, 'display', 'none'); // Use Renderer2's setStyle()
+    }
+  }
+showCard() {
+    const cardElement = document.getElementById('container');
+    if (cardElement) {
+      this.renderer.setStyle(cardElement, 'display', 'contents'); // Use Renderer2's setStyle()
+    }
+  }
   async closeScanner(){
     const result = await BarcodeScanner.stopScan(); // start scanning and wait for a result
     // if the result has content
-  
+    this.showCard()
     
     const yourDiv = document.querySelector('container')?.remove;
     window.document.querySelector('ion-app')?.classList.remove('cameraView');
-      document.querySelector('body')?.classList.remove('scanner-active');
-    window.document.querySelector('ion-app')?.classList.remove('cameraView');
-    window.document.querySelector('ion-app')?.classList.remove('cameraView');
+    document.querySelector('body')?.classList.remove('scanner-active');
+   
   }
 
   async scanBarcode() {
-    const yourDiv = document.querySelector('container')?.remove;
+    this.hideCard();
+   
     window.document.querySelector('ion-app')?.classList.add('cameraView');
-    const containerDiv = document.querySelector('.container'); // Target the container
-  if (containerDiv) {
-    containerDiv.classList.add('transparent-container');
-  }
+    // Target the container
+
     document.querySelector('body')?.classList.add('scanner-active');
     await BarcodeScanner.checkPermission({ force: true });
     // make background of WebView transparent
@@ -102,8 +112,10 @@ export class AddInventoryStoreroomPage implements OnInit {
     const result = await BarcodeScanner.startScan(); // start scanning and wait for a result
     // if the result has content
     if (result.hasContent) {
+      this.showCard();
       this.barcode = result.content;
       console.log(result.content); // log the raw scanned content
+      document.querySelector('body')?.classList.remove('scanner-active');
       window.document.querySelector('ion-app')?.classList.remove('cameraView');
     }
   }

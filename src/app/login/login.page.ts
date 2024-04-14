@@ -5,6 +5,7 @@ import { AngularFireAuth } from '@angular/fire/compat/auth';
 import { LoadingController, NavController, ToastController } from '@ionic/angular';
 import firebase from 'firebase/compat/app';
 import 'firebase/compat/firestore';
+import { Renderer2 } from '@angular/core'; 
 
 @Component({
   selector: 'app-login',
@@ -20,6 +21,7 @@ export class LoginPage implements OnInit {
   defaultAdminPassword: string = '@bestB1234';
 
   constructor(
+   
     private router: Router,
     private loadingController: LoadingController,
     private controller: NavController,
@@ -119,4 +121,7 @@ export class LoginPage implements OnInit {
      
     
   }
+  
+  
+  
 }
