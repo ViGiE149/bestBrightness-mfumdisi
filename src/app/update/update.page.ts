@@ -42,6 +42,7 @@ export class UpdatePage implements OnInit {
   }
 
   async scanBarcode() {
+    window.document.querySelector('ion-app')?.classList.add('cameraView');
     document.querySelector('body')?.classList.add('scanner-active');
     await BarcodeScanner.checkPermission({ force: true });
     // make background of WebView transparent
@@ -52,6 +53,7 @@ export class UpdatePage implements OnInit {
     if (result.hasContent) {
       this.barcode = result.content;
       console.log(result.content); // log the raw scanned content
+      window.document.querySelector('ion-app')?.classList.remove('cameraView');
     }
   }
 
