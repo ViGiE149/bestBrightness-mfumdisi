@@ -1,9 +1,9 @@
 <ion-header>
   <ion-toolbar color="primary">
     <ion-buttons slot="start">
-      <ion-back-button routerLink="/login" defaultHref="/"></ion-back-button>
+      <ion-back-button routerLink="/choose" defaultHref="/"></ion-back-button>
     </ion-buttons>
-    <ion-menu-button menu="main-menu" slot="end"></ion-menu-button>
+   
     <ion-menu-button menu="main-menu" slot="end"></ion-menu-button>
     <ion-title class="ion-text-center">My Profile</ion-title>
   </ion-toolbar>
@@ -25,19 +25,11 @@
           <ion-icon name="mail" class="item-icon"></ion-icon>
           <p class="item-text">{{ user.email }}</p>
         </div>
-        <div class="profile-item">
+  
           <ion-icon name="briefcase" class="item-icon"></ion-icon>
           <p class="item-text">{{ user.role }}</p>
-        </div>
-        <div class="profile-item">
-          <ion-icon name="flag" class="item-icon"></ion-icon>
-          <p class="item-text professional-status">{{ user.status }}</p>
-        </div>
-        <div class="profile-item note">
-          <p class="note-text">
-            We require administrator approval for system access to ensure security. Your patience is appreciated. We'll notify you once access is granted.
-          </p>
-        </div>
+
+   
       </ion-card-content>
     </ng-container>
     <ng-template #loading>

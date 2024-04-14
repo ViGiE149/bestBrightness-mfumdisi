@@ -70,17 +70,21 @@ export class SignUpPage implements OnInit {
             }
           )
             .then(() => {
-              loader.dismiss();
+          
               
              const templateParams = {
+               mail_to:  this.email,
                 admin : "admin",
                 subject: "Registration notification ",
                 message:"you are now registerd on the system the bestBrightness as a "+ this.selectedRole+" you can now login with :email-"+this.email +" password-"+this.password,
             };
               emailjs.send('service_iht2ej9', 'template_ma66v75', templateParams, 'sdec_-eHbbd95KUHJ')
               .then(function(response) {
+                loader.dismiss();
                  console.log('SUCCESS!', response.status, response.text);
+                 alert("email sebt to the new user with their login details");
               }, function(error) {
+                loader.dismiss();
                  console.log('FAILED...', error);
               });
 
@@ -98,6 +102,7 @@ export class SignUpPage implements OnInit {
         }
       })
       .catch((error: any) => { // Explicitly specify type
+        loader.dismiss();
         console.error('Error creating user:', error);
       });
   }
