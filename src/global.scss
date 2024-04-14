@@ -27,8 +27,11 @@
 
 
 body.scanner-active {
-    --background: transparent;
-    --ion-background-color: transparent;
+    --background: transparent !important;
+    --ion-background-color: transparent !important;
+    background: transparent none !important;
+    --background: transparent none !important;
+    --ion-background-color: none;
   }
 
   ion-content{
@@ -39,3 +42,11 @@ body.scanner-active {
   } .custom-scan-button {
     width: 100%;
   }
+  ion-app.cameraView,
+ion-app.cameraView ion-content,
+ion-app.cameraView .nav-decor,
+ion-app.cameraView ion-page {
+  background: transparent none !important;
+  --background: transparent none !important;
+  --ion-background-color: none;
+}
