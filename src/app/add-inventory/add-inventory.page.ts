@@ -10,6 +10,7 @@ import {
   ToastController,
 } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
+import { debounceTime } from 'rxjs/operators';
 
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -37,6 +38,7 @@ export class AddInventoryPage implements OnInit {
 
   // Variable to hold the barcode value
   toggleChecked: boolean = false;
+  inventoryItems: any;;
 
   constructor(
     private modalController: ModalController,
@@ -50,6 +52,7 @@ export class AddInventoryPage implements OnInit {
     this.currentTime = this.currentDate.toLocaleTimeString("en-US", {
       hour12: false,
     });
+  
   }
 
   ngOnInit() {
@@ -77,22 +80,105 @@ export class AddInventoryPage implements OnInit {
     return snapshot.ref.getDownloadURL();
   }
 
+  async fetchInventoryItems() {
+    try {
+      const snapshot = await this.firestore.collection('inventory').ref.get();
+      this.inventoryItems = snapshot.docs.map((doc:any) => ({ id: doc.id, ...doc.data() }));
+    } catch (error) {
+      console.error('Error fetching inventory items:', error);
+    }
+  }
+  
+  async searchProductByBarcode() {
+    if (this.barcode.trim() === '') {
+      // If the barcode input is empty, clear other input fields
+      this.clearFieldsExceptBarcode();
+      return;
+    }
+  
+    // Search for the product with the entered barcode in Firestore
+    const querySnapshot = await this.firestore
+      .collection('storeroomInventory')
+      .ref.where('barcode', '==', this.barcode.trim())
+      .limit(1)
+      .get();
+  
+    if (!querySnapshot.empty) {
+      // If a product with the entered barcode is found, populate the input fields
+      const productData:any = querySnapshot.docs[0].data();
+      this.itemName = productData.name;
+      this.itemCategory = productData.category;
+      this.itemDescription = productData.description;
+      // You can similarly populate other input fields here
+    } else {
+      // If no product with the entered barcode is found, clear other input fields
+      this.clearFieldsExceptBarcode();
+      this.presentToast('Product not found', 'warning');
+    }
+  }
+  
+  clearFieldsExceptBarcode() {
+    // Clear all input fields except the barcode input
+    this.itemName = '';
+    this.itemCategory = '';
+    this.itemDescription = '';
+    // Clear other input fields here
+  }
+  
+
+
+  async closeScanner(){
+    const result = await BarcodeScanner.stopScan(); // start scanning and wait for a result
+    // if the result has content
+  
+    
+    const yourDiv = document.querySelector('container')?.remove;
+    window.document.querySelector('ion-app')?.classList.remove('cameraView');
+      document.querySelector('body')?.classList.remove('scanner-active');
+    window.document.querySelector('ion-app')?.classList.remove('cameraView');
+    window.document.querySelector('ion-app')?.classList.remove('cameraView');
+  }
+
   async scanBarcode() {
+    const yourDiv = document.querySelector('container')?.remove;
+    window.document.querySelector('ion-app')?.classList.add('cameraView');
+    const containerDiv = document.querySelector('.container'); // Target the container
+  if (containerDiv) {
+    containerDiv.classList.add('transparent-container');
+  }
     document.querySelector('body')?.classList.add('scanner-active');
     await BarcodeScanner.checkPermission({ force: true });
     // make background of WebView transparent
     // note: if you are using ionic this might not be enough, check below
-    BarcodeScanner.hideBackground();
+    //BarcodeScanner.hideBackground();
     const result = await BarcodeScanner.startScan(); // start scanning and wait for a result
     // if the result has content
     if (result.hasContent) {
       this.barcode = result.content;
-      console.log(result.content); // log the raw scanned content
-      this.toggleChecked=true;
-      document.querySelector('body')?.classList.remove('scanner-active');
+      console.log(result.content);
+      
+      
+      
+      const querySnapshot = await this.firestore
+      .collection('storeroomInventory')
+      .ref.where('barcode', '==', result.content)
+      .limit(1)
+      .get();
+
+    if (!querySnapshot.empty) {
+      // If a product with the same barcode is found, populate the input fields
+      const productData:any = querySnapshot.docs[0].data();
+      this.itemName = productData.name;
+      this.itemCategory = productData.category;
+      this.itemDescription = productData.description;
+   
+      // You can similarly populate other input fields here
+    } else {
+      this.presentToast('Product not found', 'warning');
+    }// log the raw scanned content
+      window.document.querySelector('ion-app')?.classList.remove('cameraView');
     }
   }
-
   toggleMode() {
     if (this.toggleChecked) {
       this.barcode = ''; // Clear the barcode value when switching to input mode

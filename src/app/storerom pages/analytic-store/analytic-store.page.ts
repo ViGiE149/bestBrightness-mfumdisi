@@ -15,6 +15,7 @@ export class AnalyticStorePage implements OnInit {
 
   constructor(private firestore:AngularFirestore) {
     this.getInventory();
+    this.getUsers();
    
    }
 
@@ -23,7 +24,7 @@ export class AnalyticStorePage implements OnInit {
   
   }
   getInventory() {
-    this.firestore.collection('inventory').valueChanges().subscribe((data: any[]) => {
+    this.firestore.collection('storeroomInventory').valueChanges().subscribe((data: any[]) => {
       this.inventory = data;
       console.log(this.inventory)
       this.calculateUniqueBarcodesCount(this.inventory);
@@ -46,7 +47,7 @@ export class AnalyticStorePage implements OnInit {
   getUsers() {
     this.firestore.collection('Users').valueChanges().subscribe((data: any[]) => {
       this.users = data;
-      this.calculateUniqueBarcodesCount(this.users);
+    
     });
   }
 

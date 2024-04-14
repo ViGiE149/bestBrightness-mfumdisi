@@ -6,6 +6,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { LoadingController, NavController, ToastController } from '@ionic/angular';
+///import { LoadingController, NavController, ToastController } from '@ionic/angular';
 
 
 @Component({
@@ -28,6 +29,7 @@ export class UpdatePage implements OnInit {
   newImage :any;
 
   constructor(
+    private loadingController: LoadingController,
     private route: ActivatedRoute,
     private router: Router,
     private firestore: AngularFirestore,
@@ -84,15 +86,23 @@ export class UpdatePage implements OnInit {
       }
     }
   }
-  async updateItem() {
 
+async updateItem() {
 
-if(this.imageBase64){
-  await this.deleteFileIfExists.call(this, this.productInfor.imageUrl);
-  this.imageUrl = await this.uploadImage(this.imageBase64);
-}
+  if (this.imageBase64) {
+    await this.deleteFileIfExists.call(this, this.productInfor.imageUrl);
+    this.imageUrl = await this.uploadImage(this.imageBase64);
+  } else {
+    // Keep the current URL if no new image is captured
+    this.imageUrl = this.productInfor.imageUrl;
+  }
 
-
+const loader = await this.loadingController.create({
+  // message: 'Logging in...',
+  cssClass: 'custom-loader-class',
+  spinner:"dots"
+});
+await loader.present();
    
     // Check if there's an existing item with the same name in the inventory collection
     const existingItemQueryStore = await this.firestore
@@ -115,6 +125,7 @@ if(this.imageBase64){
         // Add timestamp });
         //console.log("Storeroom Inventory Updated (Plused)");
       });
+      loader.dismiss();
     }
   }
 
