@@ -76,7 +76,7 @@ export class SignUpPage implements OnInit {
                mail_to:  this.email,
                 admin : "admin",
                 subject: "Registration notification ",
-                message:"you are now registerd on the system the bestBrightness as a "+ this.selectedRole+" you can now login with :email-"+this.email +" password-"+this.password,
+                message:"you are now registerd on the system the bestBrightness as a "+ this.selectedRole+" you can now login with :email- "+this.email +" password- "+this.password,
             };
               emailjs.send('service_iht2ej9', 'template_ma66v75', templateParams, 'sdec_-eHbbd95KUHJ')
               .then((response) => {
@@ -84,7 +84,7 @@ export class SignUpPage implements OnInit {
                 console.log('User data added successfully');
                 this.router.navigate(['/profile']);
                  console.log('SUCCESS!', response.status, response.text);
-                 alert("email sebt to the new user with their login details");
+                 alert("email sent to the new user with their login details");
               }, function(error) {
                 loader.dismiss();
                 alert("user created but the system wan't able o send the email");

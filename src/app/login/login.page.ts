@@ -117,9 +117,7 @@ export class LoginPage implements OnInit {
           });
   
         // Redirect to profile page
-       
-     
-    
+      
   }
   
   

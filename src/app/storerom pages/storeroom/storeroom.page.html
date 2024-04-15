@@ -79,20 +79,23 @@
 
 <ion-modal [isOpen]="isModalOpen" (didDismiss)="isModalOpen = false">
   <ng-template>
-    <ion-header>
-      <ion-toolbar>
-        <ion-title>{{ modalTitle }}</ion-title>
-        <ion-buttons slot="end">
-          <ion-button (click)="isModalOpen = false">
+    
+    <ion-content class="ion-padding">
+      <div class="main">
+        <div class="close-button-container">
+          <ion-button class="close-button" (click)="isModalOpen = false">
             <ion-icon name="close-outline"></ion-icon>
           </ion-button>
-        </ion-buttons>
-      </ion-toolbar>
-    </ion-header>
-    <ion-content class="ion-padding">
-      <div class="" id="container">
-      <img [src]="selectedImageUrl" alt="Full Image">
-    </div>
+        </div>
+        <ion-header>
+          <ion-toolbar>
+            <ion-title>{{ modalTitle }}</ion-title>
+          </ion-toolbar>
+        </ion-header>
+        <div class="image-container" id="container">
+          <img [src]="selectedImageUrl" alt="Full Image">
+        </div>
+      </div>
     </ion-content>
   </ng-template>
 </ion-modal>
