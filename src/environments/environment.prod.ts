@@ -1,5 +1,6 @@
 export const environment = {
-  production: true, firebaseConfig :{
+  production: true,
+ firebaseConfig :{
     apiKey: "AIzaSyBLFJfzsWg-_hGf5R577hawycSMD85l7Rg",
   authDomain: "best-brightness-1f500.firebaseapp.com",
   projectId: "best-brightness-1f500",
