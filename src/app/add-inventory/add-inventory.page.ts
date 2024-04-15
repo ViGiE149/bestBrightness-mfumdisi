@@ -12,7 +12,7 @@ import {
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { debounceTime } from 'rxjs/operators';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-
+import { Browser } from '@capacitor/browser';
 
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -476,7 +476,7 @@ alert("m");
       directory: Directory.ExternalStorage, // Choose the directory to save the file
       encoding: Encoding.UTF8 // Specify encoding (optional)
     });
-
+    await Browser.open({ url: result.uri });
     // Log the file URI where the PDF is saved
     console.log('PDF saved at:', result.uri);
   } catch (error) {
