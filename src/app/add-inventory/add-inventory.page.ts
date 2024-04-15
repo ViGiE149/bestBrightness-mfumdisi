@@ -11,6 +11,8 @@ import {
 } from '@ionic/angular';
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { debounceTime } from 'rxjs/operators';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
+
 
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -408,25 +410,79 @@ const docDefinition = {
 
     // Generate PDF
     //pdfMake.createPdf(docDefinition).open();
-    const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
-      // Clear the cart after generating the slip
-      pdfDocGenerator.open();
-      this.cart = [];
+    // const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
+    // const pdfData = await pdfDocGenerator.getBase64();
+    // await this.savePDFLocally(pdfData);
+    //   // Clear the cart after generating the slip
+    //   pdfDocGenerator.open();
+    //   this.cart = [];
   
-      // Show success toast notification
-      this.presentToast('Slip generated successfully',"success");
-    } catch (error) {
-      console.error('Error generating slip:', error);
-      // Handle error
-    } finally {
-      loader.dismiss();
-    }
+    //   // Show success toast notification
+    //   this.presentToast('Slip generated successfully',"success");
+    // } catch (error) {
+    //   console.error('Error generating slip:', error);
+    //   // Handle error
+    // } finally {
+    //   loader.dismiss();
+    // }
    
     
 
 
+    const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+    pdfDocGenerator.getBase64(async (pdfData: string) => {
+      try {
+        // Save the PDF locally
+        await this.savePDFLocally(pdfData);
+    
+        // Open the generated PDF
+       // pdfDocGenerator.open();
+    
+        // Clear the cart after generating the slip
+       //this.cart = [];
+    
+        // Show success toast notification
+        this.presentToast('Slip generated successfully', "success");
+      } catch (error) {
+        console.error('Error generating slip:', error);
+        // Handle error
+      } finally {
+        loader.dismiss();
+      }
+    });
+   } catch (error) {
+      console.error('Error generating slip:', error);
+      // Handle error
+    }
+
+
+
 }
 
+
+
+
+
+
+ async savePDFLocally(pdfData:any){
+  try {
+    // Generate a unique file name
+    const fileName = `invoice_${Date.now()}.pdf`;
+alert("m");
+    // Write the PDF data to a file
+    const result = await Filesystem.writeFile({
+      path: fileName,
+      data: pdfData,
+      directory: Directory.ExternalStorage, // Choose the directory to save the file
+      encoding: Encoding.UTF8 // Specify encoding (optional)
+    });
+
+    // Log the file URI where the PDF is saved
+    console.log('PDF saved at:', result.uri);
+  } catch (error) {
+    console.error('Error saving PDF:', error);
+  }
+}
 
   clearFields() {
     this.itemName = '';
