@@ -120,25 +120,23 @@ export class AddInventoryStoreroomPage implements OnInit {
       this.renderer.setStyle(cardElement, 'display', 'none'); // Use Renderer2's setStyle()
     }
   }
+
 showCard() {
     const cardElement = document.getElementById('container');
     if (cardElement) {
       this.renderer.setStyle(cardElement, 'display', 'contents'); // Use Renderer2's setStyle()
     }
   }
+
   async closeScanner(){
     const result = await BarcodeScanner.stopScan(); // start scanning and wait for a result
     // if the result has content
     this.showCard()
-    
-   
     window.document.querySelector('ion-app')?.classList.remove('cameraView');
     document.querySelector('body')?.classList.remove('scanner-active');
-   
   }
 
   async scanBarcode() {
- 
     window.document.querySelector('ion-app')?.classList.add('cameraView');
     this.hideCard();
     document.querySelector('body')?.classList.add('scanner-active');
@@ -176,6 +174,7 @@ showCard() {
       window.document.querySelector('ion-app')?.classList.remove('cameraView');
     }
   }
+
   toggleMode() {
     if (this.toggleChecked) {
       this.barcode = ''; // Clear the barcode value when switching to input mode
@@ -191,13 +190,10 @@ showCard() {
   async addItem() {
 
     this.checkBookingDateTime(this.currentDate,this.currentTime);
-
-
     const loader = await this.loadingController.create({
       message: 'Adding Inventory...',
     });
     await loader.present();
-
     try {
       if (this.imageBase64) {
         this.imageUrl = await this.uploadImage(this.imageBase64);
@@ -221,6 +217,27 @@ showCard() {
       this.cart.push(newItem);
       console.log(this.cart);
       this.presentToast('Item added to cart','success');
+
+      const querySnapshot = await this.firestore
+      .collection('storeroomInventory')
+      .ref.where('barcode', '==', this.barcode.trim())
+      .limit(1)
+      .get();
+
+
+      if (!querySnapshot.empty) {
+        // If a product with the entered barcode is found, populate the input fields
+        const productData:any = querySnapshot.docs[0].data();
+        const docId:any=querySnapshot.docs[0].id;
+        await this.firestore.collection('storeroomInventory').doc(docId).update( productData.quality + newItem);
+        this.clearFields();
+        console.log("updated and added");
+        return 
+   
+        // You can similarly populate other input fields here
+      }
+
+
       await this.firestore.collection('storeroomInventory').add(newItem);
       this.clearFields();
     } catch (error) {
