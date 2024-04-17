@@ -373,7 +373,38 @@ const pdfDoc =await pdfMake.createPdf(docDefinition);
 // Generate the PDF as base64 data
 pdfDoc.getBase64(async (data:any) => {
   // Save the PDF file locally on the device
-  await this.savePDFToDevice(data);
+  try {
+    // Generate a random file name for the PDF
+    const fileName = 'aaaaaaa/generated_pdf.pdf';
+
+    // Write the PDF data to the device's data directory
+   const result= await Filesystem.writeFile({
+      path: fileName,
+      data: data,
+      directory: Directory.Documents,
+      recursive:true
+    });
+   // await FileOpener.open(`${Result.uri}`,'application/pdf');
+    // Define options for opening the PDF file
+    const options: FileOpenerOptions = {
+      filePath: `${result.uri}`,
+      contentType: 'application/pdf', // Mime type of the file
+      openWithDefault: true, // Open with the default application
+    };
+
+    // Use FileOpener to open the PDF file
+    await FileOpener.open(options);
+    alert("blue");
+  } catch (error) {
+    console.error('Error saving or opening PDF:', error);
+  }
+
+
+
+
+
+
+  
 });
 // Write the Blob to file system
 // await Filesystem.writeFile({
