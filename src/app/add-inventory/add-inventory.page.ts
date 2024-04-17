@@ -105,6 +105,7 @@ export class AddInventoryPage implements OnInit {
       this.itemName = productData.name;
       this.itemCategory = productData.category;
       this.itemDescription = productData.description;
+      this.imageUrl=productData.imageUrl;
       // You can similarly populate other input fields here
     } else {
       // If no product with the entered barcode is found, clear other input fields
@@ -118,6 +119,7 @@ export class AddInventoryPage implements OnInit {
     this.itemName = '';
     this.itemCategory = '';
     this.itemDescription = '';
+    this.imageUrl=""
     // Clear other input fields here
   }
   
@@ -176,6 +178,7 @@ showCard() {
       this.itemName = productData.name;
       this.itemCategory = productData.category;
       this.itemDescription = productData.description;
+      this.imageUrl=productData.imageUrl;
    
       // You can similarly populate other input fields here
     } else {
@@ -352,7 +355,7 @@ const docDefinition = {
     {
       table: {
         headerRows: 1,
-        widths: [ '*', '*', '*', '*', '*', '*' ],
+        widths: [ '76', '76', '76', '76', '76', '76' ],
         body: [
           [
             { text: 'Name', style: 'tableHeader' },
@@ -468,7 +471,7 @@ const docDefinition = {
   try {
     // Generate a unique file name
     const fileName = `Download/invoice_${Date.now()}.pdf`;
-alert("m");
+
     // Write the PDF data to a file
     const result = await Filesystem.writeFile({
       path: fileName,

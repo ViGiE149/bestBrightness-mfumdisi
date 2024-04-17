@@ -57,7 +57,8 @@ export class StoreroomPage implements OnInit {
     pickersDetails: any,
     dateOfPickup: any,
     timeOfPickup: any,
-    imageUrl: any
+    imageUrl: any,
+   
   ) {
     let navi: NavigationExtras = {
       state: {
@@ -70,6 +71,7 @@ export class StoreroomPage implements OnInit {
         dateOfPickup: dateOfPickup,
         timeOfPickup: timeOfPickup,
         barcode: barcode || '',
+        shop:"storeroom"
       },
     };
     this.router.navigate(['/update'], navi);

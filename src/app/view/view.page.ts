@@ -100,6 +100,7 @@ export class ViewPage implements OnInit {
         dateOfPickup: dateOfPickup,
         timeOfPickup: timeOfPickup,
         barcode: barcode || '',
+        shop:"shop"
       },
     };
     this.router.navigate(['/update'], navi);
