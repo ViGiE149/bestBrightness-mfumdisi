@@ -370,12 +370,12 @@ const blob = await new Promise<Blob>((resolve) => {
 
 // Write the Blob to file system
 await Filesystem.writeFile({
-  path:`Download/x.pdf`,
+  path:`Downloads/x.pdf`,
   data: blob,
   directory: Directory.ExternalStorage, // Choose appropriate directory
 // Choose appropriate encoding
 });
-
+alert("passed")
 console.log('PDF saved successfully');
 // Show a success message or handle according
 
