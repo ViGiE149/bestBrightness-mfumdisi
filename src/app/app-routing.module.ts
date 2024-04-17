@@ -87,7 +87,11 @@ const routes: Routes = [
   {
     path: 'analytic-shop',
     loadChildren: () => import('./analytic-shop/analytic-shop.module').then( m => m.AnalyticShopPageModule)
+  },  {
+    path: 'slips',
+    loadChildren: () => import('./slips/slips.module').then( m => m.SlipsPageModule)
   },
+
 
 
 

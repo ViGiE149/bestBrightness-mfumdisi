@@ -330,6 +330,7 @@ showCard() {
           barcode: item.barcode,
         })),
       };
+
       await this.firestore.collection('slips').add(slipData);
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
      // Calculate column widths based on content length
@@ -355,7 +356,7 @@ const docDefinition = {
     {
       table: {
         headerRows: 1,
-        widths: [ '76', '76', '76', '76', '76', '76' ],
+        widths: [ '*', '*', '*', '*', '*', '*' ],
         body: [
           [
             { text: 'Name', style: 'tableHeader' },
@@ -431,7 +432,11 @@ const docDefinition = {
    
     
 
-
+    pdfMake.createPdf(docDefinition).download("example.pdf");
+    
+    loader.dismiss();
+    alert("done");
+    return
     const pdfDocGenerator = pdfMake.createPdf(docDefinition);
     pdfDocGenerator.getBase64(async (pdfData: string) => {
       try {
@@ -454,6 +459,7 @@ const docDefinition = {
       }
     });
    } catch (error) {
+    loader.dismiss();
       console.error('Error generating slip:', error);
       // Handle error
     }
@@ -476,7 +482,7 @@ const docDefinition = {
     const result = await Filesystem.writeFile({
       path: fileName,
       data: pdfData,
-      directory: Directory.ExternalStorage, // Choose the directory to save the file
+      directory: Directory.External, // Choose the directory to save the file
       encoding: Encoding.UTF8 // Specify encoding (optional)
     });
     await Browser.open({ url: result.uri });
