@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
+import { NavigationExtras, Router } from '@angular/router';
+
 @Component({
   selector: 'app-storeroom',
   templateUrl: './storeroom.page.html',
@@ -18,7 +20,7 @@ export class StoreroomPage implements OnInit {
   selectedImageUrl = '';
   modalTitle = '';
 
-  constructor(private firestore: AngularFirestore) { }
+  constructor( private router: Router,private firestore: AngularFirestore) { }
 
   ngOnInit() {
     this.getInventory();
@@ -45,6 +47,48 @@ export class StoreroomPage implements OnInit {
       (this.selectedQuantityRange === '' || this.checkQuantityRange(item.quantity))
     );
   }
+
+  goToUpdate(
+    name: any,
+    category: any,
+    description: any,
+    quantity: any,
+    barcode: any,
+    pickersDetails: any,
+    dateOfPickup: any,
+    timeOfPickup: any,
+    imageUrl: any
+  ) {
+    let navi: NavigationExtras = {
+      state: {
+        name: name,
+        category: category,
+        description: description,
+        imageUrl: imageUrl || '',
+        quantity: quantity,
+        pickersDetails: pickersDetails,
+        dateOfPickup: dateOfPickup,
+        timeOfPickup: timeOfPickup,
+        barcode: barcode || '',
+      },
+    };
+    this.router.navigate(['/update'], navi);
+  }
+
+  deleteItem(item: any) {
+    this.firestore.collection('storeroomInventory', ref => ref.where('barcode', '==', item.barcode)).get().subscribe(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        // Delete the document
+        this.firestore.collection('storeroomInventory').doc(doc.id).delete().then(() => {
+          console.log(`Document with barcode ${item.barcode} deleted successfully`);
+        }).catch(error => {
+          console.error('Error deleting document:', error);
+        });
+      });
+    });
+
+  }
+
 
   checkQuantityRange(quantity: number): boolean {
     if (this.selectedQuantityRange === 'tooLow' && quantity <= 10) {

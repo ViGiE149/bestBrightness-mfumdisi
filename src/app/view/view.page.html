@@ -109,11 +109,17 @@
       </ion-item>
   
       <ion-item-options  side="end">
+        <ion-item-option (click)="deleteItem(item)" color="danger">
+          <ion-icon name="trash-outline"></ion-icon>
+          Delete
+        </ion-item-option>
         <ion-item-option (click)="goToUpdate(item.name,item.category,item.description,item.quantity,item.barcode,item.pickersDetails,item.dateOfPickup,item.timeOfPickup ,item.imageUrl )" color="success" >
           <ion-icon name="create-outline"></ion-icon>
           Update
         </ion-item-option>
       </ion-item-options>
+
+
     </ion-item-sliding>
   </ion-card>
   

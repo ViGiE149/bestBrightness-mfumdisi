@@ -13,8 +13,7 @@ export class ViewPage implements OnInit {
   searchTerm: string = '';
   selectedCategory: string = '';
   selectedQuantityRange: string = '';
-
-  isModalOpen = false;
+ isModalOpen = false;
   selectedImageUrl = '';
   modalTitle = '';
 
@@ -39,6 +38,22 @@ export class ViewPage implements OnInit {
         this.filterInventory();
       });
   }
+
+  deleteItem(item: any) {
+    this.firestore.collection('Inventory', ref => ref.where('barcode', '==', item.barcode)).get().subscribe(querySnapshot => {
+      querySnapshot.forEach(doc => {
+        // Delete the document
+        this.firestore.collection('Inventory').doc(doc.id).delete().then(() => {
+          console.log(`Document with barcode ${item.barcode} deleted successfully`);
+        }).catch(error => {
+          console.error('Error deleting document:', error);
+        });
+      });
+    });
+
+  }
+  
+
 
   filterInventory() {
     this.filteredInventory = this.inventory.filter((item) =>
