@@ -78,7 +78,7 @@ export class LoginPage implements OnInit {
     // Check if the user is trying to log in with the default admin credentials
     if (this.email === this.defaultAdminEmail && this.password === this.defaultAdminPassword) {
       loader.dismiss();
-      this.router.navigate(['/user-profiles']);
+      this.router.navigate(['/sign-up']);
       return;
     }
 
@@ -117,9 +117,7 @@ export class LoginPage implements OnInit {
           });
   
         // Redirect to profile page
-       
-     
-    
+      
   }
   
   
