@@ -385,7 +385,7 @@ pdfDoc.getBase64(async (data:any) => {
       recursive:true
     });
    // await FileOpener.open(`${Result.uri}`,'application/pdf');
-    // Define options for opening the PDF file
+    // Define options for opening the PDF fileb
     const options: FileOpenerOptions = {
       filePath: `${result.uri}`,
       contentType: 'application/pdf', // Mime type of the file
