@@ -395,7 +395,8 @@ pdfDoc.getBase64(async (data:any) => {
     // Use FileOpener to open the PDF file
     await FileOpener.open(options);
     alert("blue");
-  } catch (error) {
+  } catch (error:any) {
+    alert(error.message +"  "+error);
     console.error('Error saving or opening PDF:', error);
   }
 
