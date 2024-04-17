@@ -375,7 +375,7 @@ pdfDoc.getBase64(async (data:any) => {
   // Save the PDF file locally on the device
   try {
     // Generate a random file name for the PDF
-    const fileName = 'aaaaaaa/generated_pdf.pdf';
+    const fileName = 'slips/generated_pdf.pdf';
 
     // Write the PDF data to the device's data directory
    const result= await Filesystem.writeFile({
@@ -407,27 +407,7 @@ pdfDoc.getBase64(async (data:any) => {
 
   
 });
-// Write the Blob to file system
-// await Filesystem.writeFile({
-//   path:`Download/x.pdf`,
-//   data: blob,
-//   directory: Directory.ExternalStorage, // Choose appropriate directory
-//   // Choose appropriate encoding
-// });
-// alert("PDF saved successfully");
-// console.log('PDF saved successfully');
-// // Show a success message or handle according
-// return
-// const cvPdf = await PDFDocument.load(await blob.arrayBuffer());
-// await cvPdf.save();
-// await pdfMake.createPdf(docDefinition).print();
-// await pdfMake.createPdf(docDefinition).download(`${new Date().toISOString()}_Storeroom.pdf`);
-// this.cart=[];
-// alert("done");
-  
-      // Show success toast notification
-      //this.clearFields()
-     // this.presentToast('Slip generated successfully',"success");
+
     } catch (error) {
       console.error('Error generating slip:', error);
       loader.dismiss();
