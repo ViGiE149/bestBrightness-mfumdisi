@@ -367,7 +367,33 @@ const docDefinition = {
 //   pdfDocGenerator.getBlob(resolve);
 // });
 
+/* 
+const pdfDoc =await pdfMake.createPdf(docDefinition);
 
+// Generate the PDF as base64 data
+pdfDoc.getBase64(async (data:any) => {
+  // Save the PDF file locally on the device
+  try {
+    // Generate a random file name for the PDF
+    const fileName = 'slips/generated_pdf.pdf';
+
+    // Write the PDF data to the device's data directory
+   const result= await Filesystem.writeFile({
+      path: fileName,
+      data: data,
+      directory: Directory.Documents,
+      recursive:true
+    });
+   // await FileOpener.open(`${Result.uri}`,'application/pdf');
+    // Define options for opening the PDF fileb
+    const options: FileOpenerOptions = {
+      filePath: `${result.uri}`,
+      contentType: 'application/pdf', // Mime type of the file
+      openWithDefault: true, // Open with the default application
+    };
+
+    // Use FileOpener to open the PDF file
+    await FileOpener.open(options);*/
 const pdfDoc =await pdfMake.createPdf(docDefinition);
 
 // Generate the PDF as base64 data
