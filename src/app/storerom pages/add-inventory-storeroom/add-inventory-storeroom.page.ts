@@ -394,8 +394,8 @@ pdfDoc.getBase64(async (data:any) => {
 // alert("done");
   
       // Show success toast notification
-      this.clearFields()
-      this.presentToast('Slip generated successfully',"success");
+      //this.clearFields()
+     // this.presentToast('Slip generated successfully',"success");
     } catch (error) {
       console.error('Error generating slip:', error);
       loader.dismiss();
@@ -416,7 +416,7 @@ async savePDFToDevice(pdfBase64: string) {
       path: fileName,
       data: pdfBase64,
       directory: Directory.Data,
-      encoding:Encoding.UTF8
+     
     });
 
     // Define options for opening the PDF file
