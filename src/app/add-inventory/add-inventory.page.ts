@@ -407,7 +407,7 @@ export class AddInventoryPage implements OnInit {
         },
       };
   
-      await pdfMake.createPdf(docDefinition).download(`${new Date().toISOString()}_storeroom.pdf`);
+      await pdfMake.createPdf(docDefinition).download(`${new Date().toISOString()}_Shop.pdf`);
   
       loader.dismiss();
       alert('done');

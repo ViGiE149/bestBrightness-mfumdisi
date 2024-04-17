@@ -7,6 +7,7 @@ import { AlertController, LoadingController, ToastController } from '@ionic/angu
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 const pdfMake = require('pdfmake/build/pdfmake.js');
+import { PDFDocument, StandardFonts } from 'pdf-lib';
 
 
 @Component({
@@ -259,6 +260,9 @@ showCard() {
       // Create a slip document in Firestore
       const slipData = {
         date: new Date(),
+ 
+        pickersDetailsEmail:this.pickersDetailsEmail,
+        pickersDetailsPhone:this.pickersDetailsPhone,
         items: this.cart.map(item => ({
           name: item.name,
           quantity: item.quantity,
@@ -269,9 +273,7 @@ showCard() {
           dateOfPickup: item.dateOfPickup,
           timeOfPickup: item.timeOfPickup,
           barcode: item.barcode,
-          pickersDetailsEmail:this.pickersDetailsEmail,
-          pickersDetailsPhone:this.pickersDetailsPhone,
-         
+    
         })),
       };
       await this.firestore.collection('slips').add(slipData);
@@ -297,6 +299,14 @@ const docDefinition = {
       style: 'subheader'
     },
     {
+      text: `${slipData.pickersDetailsEmail}`,
+      style: 'subheader'
+    },
+    {
+      text: `${slipData.pickersDetailsPhone}`,
+      style: 'subheader'
+    },
+    {
       table: {
         headerRows: 1,
         widths: [80, 60, 100, 60, 90, 60], 
@@ -306,7 +316,6 @@ const docDefinition = {
             { text: 'Category', style: 'tableHeader' },
             { text: 'Description', style: 'tableHeader' },
             { text: 'Quantity', style: 'tableHeader' },
-            { text: 'Picker\'s Details', style: 'tableHeader' },
             { text: 'Barcode', style: 'tableHeader' }
           ],
           ...this.cart.map(item => [
@@ -314,7 +323,6 @@ const docDefinition = {
             { text: item.category, alignment: 'center' }, // Align center
             { text: item.description, alignment: 'left' }, // Align left
             { text: item.quantity.toString(), alignment: 'center' }, // Align center
-            { text: item.pickersDetails, alignment: 'left' }, // Align left
             { text: item.barcode, alignment: 'center' } // Align center
           ])
         ]
@@ -352,18 +360,16 @@ const docDefinition = {
 };
 
 
-
-
-pdfMake.createPdf(docDefinition).download("example.pdf");
+const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
+const blob = await new Promise<Blob>((resolve) => {
+  pdfDocGenerator.getBlob(resolve);
+});
+const cvPdf = await PDFDocument.load(await blob.arrayBuffer());
+await cvPdf.save();
+await pdfMake.createPdf(docDefinition).print();
+await pdfMake.createPdf(docDefinition).download(`${new Date().toISOString()}_Storeroom.pdf`);
 this.cart=[];
-loader.dismiss();
-
-    // Generate PDF
-    //pdfMake.createPdf(docDefinition).open();
-    // const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
-    //   // Clear the cart after generating the slip
-    //   pdfDocGenerator.open();
-    //   this.cart = [];
+alert("done");
   
       // Show success toast notification
       this.clearFields()
@@ -375,10 +381,7 @@ loader.dismiss();
     } finally {
       loader.dismiss();
     }
-   
-    
-
-
+  
 }
 
 clearFields() {
