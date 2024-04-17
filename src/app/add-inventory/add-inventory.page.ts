@@ -40,7 +40,7 @@ export class AddInventoryPage implements OnInit {
 
   // Variable to hold the barcode value
   toggleChecked: boolean = false;
-  inventoryItems: any;;
+  inventoryItems: any;
 
   constructor(
     private renderer: Renderer2,
@@ -52,16 +52,15 @@ export class AddInventoryPage implements OnInit {
     private alertController: AlertController
   ) {
     this.currentDate = new Date();
-    this.currentTime = this.currentDate.toLocaleTimeString("en-US", {
+    this.currentTime = this.currentDate.toLocaleTimeString('en-US', {
       hour12: false,
     });
-  
   }
 
   ngOnInit() {
-    document.querySelector('body')?.classList.remove('scanner-active'); 
+    document.querySelector('body')?.classList.remove('scanner-active');
   }
-  
+
   async takePicture() {
     const image = await Camera.getPhoto({
       quality: 90,
@@ -83,29 +82,27 @@ export class AddInventoryPage implements OnInit {
     return snapshot.ref.getDownloadURL();
   }
 
- 
-  
   async searchProductByBarcode() {
     if (this.barcode.trim() === '') {
       // If the barcode input is empty, clear other input fields
       this.clearFieldsExceptBarcode();
       return;
     }
-  
+
     // Search for the product with the entered barcode in Firestore
     const querySnapshot = await this.firestore
       .collection('storeroomInventory')
       .ref.where('barcode', '==', this.barcode.trim())
       .limit(1)
       .get();
-  
+
     if (!querySnapshot.empty) {
       // If a product with the entered barcode is found, populate the input fields
-      const productData:any = querySnapshot.docs[0].data();
+      const productData: any = querySnapshot.docs[0].data();
       this.itemName = productData.name;
       this.itemCategory = productData.category;
       this.itemDescription = productData.description;
-      this.imageUrl=productData.imageUrl;
+      this.imageUrl = productData.imageUrl;
       // You can similarly populate other input fields here
     } else {
       // If no product with the entered barcode is found, clear other input fields
@@ -113,23 +110,20 @@ export class AddInventoryPage implements OnInit {
       this.presentToast('Product not found', 'warning');
     }
   }
-  
+
   clearFieldsExceptBarcode() {
     // Clear all input fields except the barcode input
     this.itemName = '';
     this.itemCategory = '';
     this.itemDescription = '';
-    this.imageUrl=""
+    this.imageUrl = '';
     // Clear other input fields here
   }
-  
 
-
-  async closeScanner(){
+  async closeScanner() {
     const result = await BarcodeScanner.stopScan(); // start scanning and wait for a result
     // if the result has content
-  
-    
+
     this.showCard();
     window.document.querySelector('ion-app')?.classList.remove('cameraView');
     document.querySelector('body')?.classList.remove('scanner-active');
@@ -141,14 +135,13 @@ export class AddInventoryPage implements OnInit {
       this.renderer.setStyle(cardElement, 'display', 'none'); // Use Renderer2's setStyle()
     }
   }
-showCard() {
+  showCard() {
     const cardElement = document.getElementById('container');
     if (cardElement) {
       this.renderer.setStyle(cardElement, 'display', 'contents'); // Use Renderer2's setStyle()
     }
   }
   async scanBarcode() {
- 
     window.document.querySelector('ion-app')?.classList.add('cameraView');
     this.hideCard();
     document.querySelector('body')?.classList.add('scanner-active');
@@ -161,60 +154,61 @@ showCard() {
     if (result.hasContent) {
       this.barcode = result.content;
       console.log(result.content);
-      
+
       this.showCard();
-      
+
       const querySnapshot = await this.firestore
-      .collection('storeroomInventory')
-      .ref.where('barcode', '==', result.content)
-      .limit(1)
-      .get();
+        .collection('storeroomInventory')
+        .ref.where('barcode', '==', result.content)
+        .limit(1)
+        .get();
       window.document.querySelector('ion-app')?.classList.remove('cameraView');
       document.querySelector('body')?.classList.remove('scanner-active');
-    if (!querySnapshot.empty) {
-      // If a product with the same barcode is found, populate the input fields
-      
-      const productData:any = querySnapshot.docs[0].data();
-      this.itemName = productData.name;
-      this.itemCategory = productData.category;
-      this.itemDescription = productData.description;
-      this.imageUrl=productData.imageUrl;
-   
-      // You can similarly populate other input fields here
-    } else {
-      this.presentToast('Product not found', 'warning');
-    }// log the raw scanned content
+      if (!querySnapshot.empty) {
+        // If a product with the same barcode is found, populate the input fields
+
+        const productData: any = querySnapshot.docs[0].data();
+        this.itemName = productData.name;
+        this.itemCategory = productData.category;
+        this.itemDescription = productData.description;
+        this.imageUrl = productData.imageUrl;
+
+        // You can similarly populate other input fields here
+      } else {
+        this.presentToast('Product not found', 'warning');
+      } // log the raw scanned content
       window.document.querySelector('ion-app')?.classList.remove('cameraView');
     }
   }
 
-
-  
   toggleMode() {
     if (this.toggleChecked) {
       this.barcode = ''; // Clear the barcode value when switching to input mode
       BarcodeScanner.showBackground();
-  BarcodeScanner.stopScan();
-  document.querySelector('body')?.classList.remove('scanner-active');
+      BarcodeScanner.stopScan();
+      document.querySelector('body')?.classList.remove('scanner-active');
     }
   }
   checkBookingDateTime(date: any, startTime: any): void {
     // Check if the date is in the past
-    if (date >= this.currentDate.toISOString().split("T")[0]) {
-      this.presentToast("date must be behind or must be current date.","warning");
+    if (date >= this.currentDate.toISOString().split('T')[0]) {
+      this.presentToast(
+        'date must be behind or must be current date.',
+        'warning'
+      );
       return;
     }
-  
-    if (!this.imageBase64){
-      this.presentToast("Capture the image of the product","warning");
+
+    if (!this.imageBase64) {
+      this.presentToast('Capture the image of the product', 'warning');
       return;
     }
-  
+
     // Check if the time is in the past
   }
   async addItem() {
     let itemQuantity = 0;
-    this.checkBookingDateTime(this.currentDate,this.currentTime);
+    this.checkBookingDateTime(this.currentDate, this.currentTime);
     const loader = await this.loadingController.create({
       message: 'Adding Inventory...',
     });
@@ -224,13 +218,14 @@ showCard() {
       if (this.imageBase64) {
         this.imageUrl = await this.uploadImage(this.imageBase64);
       }
+
       const userEmail = await this.firestore
         .collection('Users')
         .ref.where('email', '==', this.pickersDetails)
         .get();
       console.log(userEmail);
       if (userEmail.empty) {
-        this.presentToast('this delivery guy is not no our system',"warning");
+        this.presentToast('this delivery guy is not no our system', 'warning');
         console.log('this delivary guy is not no our system');
         return;
       }
@@ -249,7 +244,8 @@ showCard() {
           this.presentToast(
             'Insufficient Stock, The stock for this item is insufficient. the are ' +
               existingItemData.quantity +
-              ' available',"warning"
+              ' available',
+            'warning'
           );
           return;
         }
@@ -257,12 +253,15 @@ showCard() {
         console.log(existingItemData.quantity);
         console.log(updatedQuantity);
         itemQuantity = existingItemData.quantity;
+        
 
         await existingItemDoc.ref.update({ quantity: updatedQuantity });
+       // this.cart.push();
         console.log('Storeroom Inventory Updated (Minused)');
       } else {
         this.presentToast(
-          'this product barcode does  not metch any on our storeroom',"warning"
+          'this product barcode does  not metch any on our storeroom',
+          'warning'
         );
         return;
       }
@@ -279,8 +278,8 @@ showCard() {
         const updatedQuantity = existingItemData.quantity + this.itemQuantity;
         this.itemQuantity += updatedQuantity;
         await existingItemDoc.ref.update({ quantity: updatedQuantity });
+        
         console.log('Storeroom Inventory Updated (Plused)');
-        return;
       }
 
       const newItem = {
@@ -297,7 +296,7 @@ showCard() {
       };
       this.cart.push(newItem);
 
-      this.presentToast('Item added to cart',"successfull");
+      this.presentToast('Item added to cart', 'successfull');
       await this.firestore.collection('inventory').add(newItem);
       this.clearFields();
     } catch (error) {
@@ -313,185 +312,132 @@ showCard() {
       message: 'Generating Slip...',
     });
     await loader.present();
-  console.log("data",this.cart)
+    console.log('data', this.cart);
     try {
       // Create a slip document in Firestore
       const slipData = {
-        date: new Date(),
-        items: this.cart.map(item => ({
+        date: new Date().toLocaleDateString(),
+        pickersDetails: this.cart[0].pickersDetails,
+        items: this.cart.map((item) => ({
           name: item.name,
           quantity: item.quantity,
           category: item.category,
           description: item.description,
           imageUrl: item.imageUrl,
-          pickersDetails: item.pickersDetails,
           dateOfPickup: item.dateOfPickup,
           timeOfPickup: item.timeOfPickup,
           barcode: item.barcode,
         })),
       };
-
+      console.log('slipData:', slipData); // Log slipData to check its structure
+  
       await this.firestore.collection('slips').add(slipData);
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
-     // Calculate column widths based on content length
-
-
-// Define PDF content
-// Define PDF content
-// Define PDF content
-const docDefinition = {
-  content: [
-    {
-      text: 'BEST BRIGHT', // Adding the pickersDetailsPhone name to the header
-      style: 'companyName'
-    },
-    {
-      text: 'Invoice',
-      style: 'header'
-    },
-    {
-      text: `Date: ${new Date().toLocaleDateString()}`,
-      style: 'subheader'
-    },
-    {
-      table: {
-        headerRows: 1,
-        widths: [ '*', '*', '*', '*', '*', '*' ],
-        body: [
-          [
-            { text: 'Name', style: 'tableHeader' },
-            { text: 'Category', style: 'tableHeader' },
-            { text: 'Description', style: 'tableHeader' },
-            { text: 'Quantity', style: 'tableHeader' },
-            { text: 'Picker\'s Details', style: 'tableHeader' },
-            { text: 'Barcode', style: 'tableHeader' }
-          ],
-          ...this.cart.map(item => [
-            { text: item.name, alignment: 'left' }, // Align left
-            { text: item.category, alignment: 'center' }, // Align center
-            { text: item.description, alignment: 'left' }, // Align left
-            { text: item.quantity.toString(), alignment: 'center' }, // Align center
-            { text: item.pickersDetails, alignment: 'left' }, // Align left
-            { text: item.barcode, alignment: 'center' } // Align center
-          ])
-        ]
-      }
-    }
-  ],
-  styles: {
-    header: {
-      fontSize: 24,
-      bold: true,
-      margin: [0, 0, 0, 10],
-      alignment: 'center',
-      color: '#4caf50' // Green color for the header
-    },
-    subheader: {
-      fontSize: 14,
-      bold: true,
-      margin: [0, 10, 0, 10],
-      alignment: 'center'
-    },
-    tableHeader: {
-      bold: true,
-      fontSize: 12,
-      color: '#37474f', // Dark grey color for the table headers
-      alignment: 'center'
-    },
-    companyName: { // Style for the company name
-      fontSize: 28,
-      bold: true,
-      margin: [0, 0, 0, 20], // Adjust margin to separate company name from header
-      alignment: 'center',
-      color: '#ff5722' // Deep orange color for the company name
-    }
-  }
-};
-
-
-
-
-
-    // Generate PDF
-    //pdfMake.createPdf(docDefinition).open();
-    // const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
-    // const pdfData = await pdfDocGenerator.getBase64();
-    // await this.savePDFLocally(pdfData);
-    //   // Clear the cart after generating the slip
-    //   pdfDocGenerator.open();
-    //   this.cart = [];
   
-    //   // Show success toast notification
-    //   this.presentToast('Slip generated successfully',"success");
-    // } catch (error) {
-    //   console.error('Error generating slip:', error);
-    //   // Handle error
-    // } finally {
-    //   loader.dismiss();
-    // }
-   
-    
-
-    pdfMake.createPdf(docDefinition).download("example.pdf");
-    
-    loader.dismiss();
-    alert("done");
-    return
-    const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-    pdfDocGenerator.getBase64(async (pdfData: string) => {
-      try {
-        // Save the PDF locally
-        await this.savePDFLocally(pdfData);
-    
-        // Open the generated PDF
-       // pdfDocGenerator.open();
-    
-        // Clear the cart after generating the slip
-       //this.cart = [];
-    
-        // Show success toast notification
-        this.presentToast('Slip generated successfully', "success");
-      } catch (error) {
-        console.error('Error generating slip:', error);
-        // Handle error
-      } finally {
-        loader.dismiss();
-      }
-    });
-   } catch (error) {
-    loader.dismiss();
+      // Define PDF content
+      const docDefinition = {
+        content: [
+          {
+            text: 'BEST BRIGHT', // Adding the pickersDetailsPhone name to the header
+            style: 'companyName',
+          },
+          {
+            text: 'Invoice',
+            style: 'header',
+          },
+          {
+            text: `Date: ${new Date().toLocaleDateString()}`,
+            style: 'subheader',
+          },
+          {
+            text: ` ${ slipData.pickersDetails}`,
+            style: 'subheader',
+          },
+          {
+            table: {
+              headerRows: 1,
+              widths: [80, 60, 100, 60, 90, 60],
+              body: [
+                [
+                  { text: 'Name', style: 'tableHeader' },
+                  { text: 'Category', style: 'tableHeader' },
+                  { text: 'Description', style: 'tableHeader' },
+                  { text: 'Quantity', style: 'tableHeader' },
+                  { text: 'Barcode', style: 'tableHeader' },
+                ],
+                ...slipData.items.map((item:any) => [
+                  { text: item.name, alignment: 'left' },
+                  { text: item.category, alignment: 'center' },
+                  { text: item.description, alignment: 'left' },
+                  { text: item.quantity.toString(), alignment: 'center' },
+                  { text: item.barcode, alignment: 'center' },
+                ]),
+              ],
+            },
+          },
+        ],
+        styles: {
+          header: {
+            fontSize: 24,
+            bold: true,
+            margin: [0, 0, 0, 10],
+            alignment: 'center',
+            color: '#4caf50', // Green color for the header
+          },
+          subheader: {
+            fontSize: 14,
+            bold: true,
+            margin: [0, 10, 0, 10],
+            alignment: 'center',
+          },
+          tableHeader: {
+            bold: true,
+            fontSize: 12,
+            color: '#37474f', // Dark grey color for the table headers
+            alignment: 'center',
+          },
+          companyName: {
+            // Style for the company name
+            fontSize: 28,
+            bold: true,
+            margin: [0, 0, 0, 20], // Adjust margin to separate company name from header
+            alignment: 'center',
+            color: '#ff5722', // Deep orange color for the company name
+          },
+        },
+      };
+  
+      await pdfMake.createPdf(docDefinition).download(`${new Date().toISOString()}_storeroom.pdf`);
+  
+      loader.dismiss();
+      alert('done');
+    } catch (error) {
+      loader.dismiss();
       console.error('Error generating slip:', error);
       // Handle error
     }
-
-
-
-}
-
-
-
-
-
-
- async savePDFLocally(pdfData:any){
-  try {
-    // Generate a unique file name
-    const fileName = `Download/invoice_${Date.now()}.pdf`;
-
-    // Write the PDF data to a file
-    const result = await Filesystem.writeFile({
-      path: fileName,
-      data: pdfData,
-      directory: Directory.External, // Choose the directory to save the file
-      encoding: Encoding.UTF8 // Specify encoding (optional)
-    });
-    await Browser.open({ url: result.uri });
-    // Log the file URI where the PDF is saved
-    console.log('PDF saved at:', result.uri);
-  } catch (error) {
-    console.error('Error saving PDF:', error);
   }
-}
+  
+
+  async savePDFLocally(pdfData: any) {
+    try {
+      // Generate a unique file name
+      const fileName = `Download/invoice_${Date.now()}.pdf`;
+
+      // Write the PDF data to a file
+      const result = await Filesystem.writeFile({
+        path: fileName,
+        data: pdfData,
+        directory: Directory.External, // Choose the directory to save the file
+        encoding: Encoding.UTF8, // Specify encoding (optional)
+      });
+      await Browser.open({ url: result.uri });
+      // Log the file URI where the PDF is saved
+      console.log('PDF saved at:', result.uri);
+    } catch (error) {
+      console.error('Error saving PDF:', error);
+    }
+  }
 
   clearFields() {
     this.itemName = '';
@@ -506,12 +452,12 @@ const docDefinition = {
     this.imageUrl = null;
   }
 
-  async presentToast(message: string,color:string) {
+  async presentToast(message: string, color: string) {
     const toast = await this.ToastController.create({
       message: message,
       duration: 4000,
       position: 'top',
-      color:color
+      color: color,
     });
     toast.present();
   }

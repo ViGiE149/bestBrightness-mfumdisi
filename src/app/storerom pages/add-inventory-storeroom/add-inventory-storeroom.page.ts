@@ -215,7 +215,7 @@ showCard() {
         pickersDetailsPhone:this.pickersDetailsPhone
       };
       this.cart.push(newItem);
-      console.log(this.cart);
+      console.log("test--",this.cart);
       this.presentToast('Item added to cart','success');
 
       const querySnapshot = await this.firestore
@@ -229,7 +229,8 @@ showCard() {
         // If a product with the entered barcode is found, populate the input fields
         const productData:any = querySnapshot.docs[0].data();
         const docId:any=querySnapshot.docs[0].id;
-        await this.firestore.collection('storeroomInventory').doc(docId).update( productData.quality + newItem);
+        console.log(productData.quantity );
+        await this.firestore.collection('storeroomInventory').doc(docId).update({quantity:productData.quantity + this.itemQuantity});
         this.clearFields();
         console.log("updated and added");
         return 
@@ -298,7 +299,7 @@ const docDefinition = {
     {
       table: {
         headerRows: 1,
-        widths: [ '*', '*', '*', '*', '*', '*' ],
+        widths: [80, 60, 100, 60, 90, 60], 
         body: [
           [
             { text: 'Name', style: 'tableHeader' },
@@ -353,18 +354,23 @@ const docDefinition = {
 
 
 
+pdfMake.createPdf(docDefinition).download("example.pdf");
+this.cart=[];
+loader.dismiss();
 
     // Generate PDF
     //pdfMake.createPdf(docDefinition).open();
-    const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
-      // Clear the cart after generating the slip
-      pdfDocGenerator.open();
-      this.cart = [];
+    // const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
+    //   // Clear the cart after generating the slip
+    //   pdfDocGenerator.open();
+    //   this.cart = [];
   
       // Show success toast notification
+      this.clearFields()
       this.presentToast('Slip generated successfully',"success");
     } catch (error) {
       console.error('Error generating slip:', error);
+      loader.dismiss();
       // Handle error
     } finally {
       loader.dismiss();

@@ -91,6 +91,10 @@ const routes: Routes = [
     path: 'slips',
     loadChildren: () => import('./slips/slips.module').then( m => m.SlipsPageModule)
   },
+  {
+    path: 'all-slips',
+    loadChildren: () => import('./all-slips/all-slips.module').then( m => m.AllSlipsPageModule)
+  },
 
 
 

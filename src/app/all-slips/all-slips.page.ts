@@ -1,13 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { Observable } from 'rxjs';
 
 @Component({
-  selector: 'app-slips',
-  templateUrl: './slips.page.html',
-  styleUrls: ['./slips.page.scss'],
+  selector: 'app-all-slips',
+  templateUrl: './all-slips.page.html',
+  styleUrls: ['./all-slips.page.scss'],
 })
-export class SlipsPage implements OnInit {
+export class AllSlipsPage implements OnInit {
   item$: any;
   formattedItem: any;
 
@@ -23,4 +22,7 @@ showDate(date: string): boolean {
   }
   return false;
 }
+passTO(){}
+
 }
+
