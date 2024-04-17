@@ -8,6 +8,7 @@ import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 const pdfMake = require('pdfmake/build/pdfmake.js');
 import { PDFDocument, StandardFonts } from 'pdf-lib';
+import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 
 
 @Component({
@@ -364,6 +365,20 @@ const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
 const blob = await new Promise<Blob>((resolve) => {
   pdfDocGenerator.getBlob(resolve);
 });
+
+
+
+// Write the Blob to file system
+await Filesystem.writeFile({
+  path:`Download/x.pdf`,
+  data: blob,
+  directory: Directory.ExternalStorage, // Choose appropriate directory
+// Choose appropriate encoding
+});
+
+console.log('PDF saved successfully');
+// Show a success message or handle according
+
 const cvPdf = await PDFDocument.load(await blob.arrayBuffer());
 await cvPdf.save();
 await pdfMake.createPdf(docDefinition).print();
@@ -383,6 +398,59 @@ alert("done");
     }
   
 }
+
+
+
+
+
+async savePdfToDevice(docDefinition: any, fileName: string) {
+  try {
+    // Generate the PDF
+    const pdfDocGenerator = pdfMake.createPdf(docDefinition);
+    const pdfBase64: string = await this.getPdfBase64(pdfDocGenerator);
+
+    // Convert base64 PDF to Uint8Array
+    const pdfData: any = this.base64ToUint8Array(pdfBase64);
+
+    // Write the PDF to the file system
+    const result = await Filesystem.writeFile({
+      path: fileName,
+      data: pdfData,
+      directory: Directory.Documents,
+      recursive: true // create any missing directories
+    });
+
+    console.log('PDF saved successfully at:', result.uri);
+    alert( 'PDF saved successfully');
+  } catch (error) {
+    console.error('Error saving PDF:', error);
+     alert('Failed to save PDF' );
+  }
+}
+
+private async getPdfBase64(pdfDocGenerator: any): Promise<string> {
+  return new Promise<string>((resolve, reject) => {
+    pdfDocGenerator.getBase64((pdfBase64: string) => {
+      resolve(pdfBase64);
+    });
+  });
+}
+
+private base64ToUint8Array(base64: string): Uint8Array {
+  const binaryString = atob(base64);
+  const length = binaryString.length;
+  const bytes = new Uint8Array(length);
+
+  for (let i = 0; i < length; i++) {
+    bytes[i] = binaryString.charCodeAt(i);
+  }
+
+  return bytes;
+}
+
+
+
+
 
 clearFields() {
   this.itemName = '';
