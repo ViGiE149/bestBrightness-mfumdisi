@@ -293,8 +293,6 @@ showCard() {
 
 
 // Define PDF content
-// Define PDF content
-// Define PDF content
 const docDefinition = {
   content: [
     {

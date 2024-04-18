@@ -308,7 +308,12 @@ export class AddInventoryPage implements OnInit {
   }
 
   async generateSlip() {
-    this.cart=[];
+    if (!this.cart || this.cart.length === 0) {
+      // If cart is null or empty, return or perform desired action
+      return;
+    }
+    // If cart is not empty, proceed with further actions
+    
     const loader = await this.loadingController.create({
         message: 'Generating Slip...',
     });
