@@ -331,7 +331,7 @@ export class AddInventoryPage implements OnInit {
         };
         console.log('slipData:', slipData); // Log slipData to check its structure
 
-      //  await this.firestore.collection('slips').add(slipData);
+ await this.firestore.collection('slips').add(slipData);
         pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
         // Define PDF content
@@ -356,7 +356,7 @@ export class AddInventoryPage implements OnInit {
                 {
                     table: {
                         headerRows: 1,
-                        widths: [80, 60, 100, 60, 90, 60],
+                        widths: [80, 60, 100, 65, 90, 65],
                         body: [
                             [
                                 { text: 'Name', style: 'tableHeader' },
