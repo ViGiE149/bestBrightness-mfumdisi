@@ -416,7 +416,7 @@ export class AddInventoryPage implements OnInit {
             // Save the PDF file locally on the device
             try {
                 // Generate a random file name for the PDF
-                const fileName =  `Slips/${Date.now().toLocaleString()}_shop.pdf.pdf`;
+                const fileName =  `Slips/${Date.now()}_shop.pdf.pdf`;
 
                 // Write the PDF data to the device's data directory
                 const result = await Filesystem.writeFile({
