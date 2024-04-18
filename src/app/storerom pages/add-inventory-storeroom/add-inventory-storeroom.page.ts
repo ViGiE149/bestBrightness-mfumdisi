@@ -310,7 +310,7 @@ const docDefinition = {
     {
       table: {
         headerRows: 1,
-        widths: [80, 60, 100, 60, 90, 60], 
+        widths: [80, 60, 100, 65, 90, 65], 
         body: [
           [
             { text: 'Name', style: 'tableHeader' },
@@ -368,7 +368,7 @@ pdfDoc.getBase64(async (data:any) => {
   // Save the PDF file locally on the device
   try {
     // Generate a random file name for the PDF
-    const fileName = `Slips/${Date.now().toLocaleString()}_shop.pdf.pdf`;
+    const fileName = `Slips/${Date.now().toLocaleString()}_storeroom.pdf`;
 
     // Write the PDF data to the device's data directory
    const result= await Filesystem.writeFile({
