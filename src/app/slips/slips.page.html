@@ -1,24 +1,31 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
+    <ion-buttons  routerLink="/all-slips"  slot="end">
+      <ion-button>
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
     <ion-title>slips</ion-title>
   </ion-toolbar>
+  
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <p>item$.items</p>
-  <ng-container *ngFor="let slip of item$ | async; let slipIndex = index">
-    <!-- <ng-container *ngIf="showDate(slip.date)">
-      <h2>{{ slip.date }}</h2>
-    </ng-container> -->
-    <div *ngFor="let item of slip.items; let itemIndex = index">
+
+  <ng-container *ngIf="item$.slip">
+    <h2>{{ item$.slip.date?.toDate() | date: 'yyyy-MM-dd' }}</h2>
+    <div *ngFor="let item of item$.slip.items; let itemIndex = index">
       <div class="slip">
         <h3>*. {{ item.name }}</h3>
         <p>Category: {{ item.category }}</p>
         <p>Description: {{ item.description }}</p>
         <p>Quantity: {{ item.quantity }}</p>
-        <!-- Add more fields as needed -->
+        <!-- Display the image if imageUrl is available -->
+        <img *ngIf="item.imageUrl" [src]="item.imageUrl" alt="Item Image" style="max-width: 100%; height: auto;">
       </div>
     </div>
   </ng-container>
+  
+  
 </ion-content>
 

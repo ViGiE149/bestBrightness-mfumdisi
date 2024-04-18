@@ -46,7 +46,7 @@
       </ion-item>
       <ion-item>
         <ion-label>Category</ion-label>
-        <ion-select [(ngModel)]="itemCategory">
+        <ion-select [(ngModel)]="itemCategory" slot="end">
           <ion-select-option value="Cleaning Detergents">Cleaning Detergents</ion-select-option>
           <ion-select-option value="Plastics">Plastics</ion-select-option>
           <ion-select-option value="Cleaning Equipment">Cleaning Equipment</ion-select-option> 
@@ -80,7 +80,7 @@
         <ion-label position="floating">Time </ion-label>
         <ion-input type="time" [(ngModel)]="timeOfPickup"></ion-input>
       </ion-item>
-   
+      <img *ngIf="imageBase64 || imageUrl" [src]="imageBase64 ? 'data:image/jpeg;base64,' + imageBase64 : imageUrl" alt="Image" style="max-width: 100%; height: auto; margin-top: 10px;">
       <ion-button  expand="block" id="fileInput" color="medium" class="custom-file-input" (click)="takePicture()">
         <ion-icon name="camera"></ion-icon>
         Take Picture

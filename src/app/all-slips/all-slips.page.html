@@ -1,18 +1,22 @@
 <ion-header [translucent]="true">
   <ion-toolbar>
     <ion-title>slips</ion-title>
+    <ion-buttons  routerLink="/sign-up"  slot="end">
+      <ion-button>
+        <ion-icon name="arrow-back-outline"></ion-icon>
+      </ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
 <ion-content [fullscreen]="true">
-  <p>item$.items</p>
+
   <ng-container *ngFor="let slip of item$ | async; let slipIndex = index">
-    <!-- <ng-container *ngIf="showDate(slip.date)">
-      <h2>{{ slip.date }}</h2>
-    </ng-container> -->
+ 
     <div *ngFor="let item of slip.items; let itemIndex = index"  (click)="passTO(slip)">
       <div class="slip">
         <h3>*. {{ item.pickersDetails }}</h3>
+        
         <!-- <p>: {{ slip.date.toDate() | date: 'yyyy-MM-dd HH:mm  a'}}</p> -->
       </div>
     </div>
