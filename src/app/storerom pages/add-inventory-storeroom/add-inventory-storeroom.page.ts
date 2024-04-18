@@ -252,6 +252,16 @@ showCard() {
   }
 
   async generateSlip() {
+
+    if (!this.cart || this.cart.length === 0) {
+      // If cart is null or empty, return or perform desired action
+      return;
+    }
+    // If cart is not empty, proceed with further actions
+    
+
+
+
     const loader = await this.loadingController.create({
       message: 'Generating Slip...',
     });
@@ -387,6 +397,7 @@ pdfDoc.getBase64(async (data:any) => {
 
     // Use FileOpener to open the PDF file
     await FileOpener.open(options);
+    this.cart=[];
 
   } catch (error:any) {
     alert(error.message +"  "+error);
