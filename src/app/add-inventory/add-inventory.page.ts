@@ -308,6 +308,7 @@ export class AddInventoryPage implements OnInit {
   }
 
   async generateSlip() {
+    this.cart=[];
     const loader = await this.loadingController.create({
         message: 'Generating Slip...',
     });
@@ -436,7 +437,7 @@ export class AddInventoryPage implements OnInit {
                 loader.dismiss();
                 // Use FileOpener to open the PDF file
                 await FileOpener.open(options);
-              
+                this.cart=[];
             } catch (error) {
                 loader.dismiss();
                 console.error('Error saving or opening PDF:', error);
