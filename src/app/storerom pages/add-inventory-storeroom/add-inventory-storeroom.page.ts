@@ -368,7 +368,7 @@ pdfDoc.getBase64(async (data:any) => {
   // Save the PDF file locally on the device
   try {
     // Generate a random file name for the PDF
-  const fileName = 'Slips/'+`${new Date().toISOString()}`+'_storeroom.pdf';
+    const fileName = 'aaaaaaa/generated_pdf.pdf';
 
     // Write the PDF data to the device's data directory
    const result= await Filesystem.writeFile({
@@ -378,7 +378,7 @@ pdfDoc.getBase64(async (data:any) => {
       recursive:true
     });
    // await FileOpener.open(`${Result.uri}`,'application/pdf');
-    // Define options for opening the PDF file
+    // Define options for opening the PDF fileb
     const options: FileOpenerOptions = {
       filePath: `${result.uri}`,
       contentType: 'application/pdf', // Mime type of the file
@@ -393,8 +393,17 @@ pdfDoc.getBase64(async (data:any) => {
     console.error('Error saving or opening PDF:', error);
   }
 
+
+
+
+
+
+  
 });
 
+      // Show success toast notification
+      //this.clearFields()
+     // this.presentToast('Slip generated successfully',"success");
     } catch (error) {
       console.error('Error generating slip:', error);
       loader.dismiss();
