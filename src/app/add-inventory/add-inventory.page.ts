@@ -295,7 +295,6 @@ export class AddInventoryPage implements OnInit {
         timestamp: new Date(),
       };
       this.cart.push(newItem);
-
       this.presentToast('Item added to cart', 'successfull');
       await this.firestore.collection('inventory').add(newItem);
       this.clearFields();

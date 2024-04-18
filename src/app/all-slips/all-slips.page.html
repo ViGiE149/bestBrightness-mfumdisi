@@ -10,10 +10,10 @@
     <!-- <ng-container *ngIf="showDate(slip.date)">
       <h2>{{ slip.date }}</h2>
     </ng-container> -->
-    <div *ngFor="let item of slip.items; let itemIndex = index"  (click)="passTO()">
+    <div *ngFor="let item of slip.items; let itemIndex = index"  (click)="passTO(slip)">
       <div class="slip">
         <h3>*. {{ item.pickersDetails }}</h3>
-        <p>: {{ slip.date.toDate() | date: 'yyyy-MM-dd HH:mm  a'}}</p>
+        <!-- <p>: {{ slip.date.toDate() | date: 'yyyy-MM-dd HH:mm  a'}}</p> -->
       </div>
     </div>
   </ng-container>
