@@ -103,6 +103,7 @@ export class AddInventoryPage implements OnInit {
       this.itemCategory = productData.category;
       this.itemDescription = productData.description;
       this.imageUrl = productData.imageUrl;
+   
       // You can similarly populate other input fields here
     } else {
       // If no product with the entered barcode is found, clear other input fields
@@ -414,7 +415,7 @@ export class AddInventoryPage implements OnInit {
             // Save the PDF file locally on the device
             try {
                 // Generate a random file name for the PDF
-                const fileName = 'Slips/' + `${new Date().toISOString()}` + '_shop.pdf';
+                const fileName = 'Slips/shop.pdf';
 
                 // Write the PDF data to the device's data directory
                 const result = await Filesystem.writeFile({
@@ -432,10 +433,10 @@ export class AddInventoryPage implements OnInit {
                     contentType: 'application/pdf', // Mime type of the file
                     openWithDefault: true, // Open with the default application
                 };
-
+                loader.dismiss();
                 // Use FileOpener to open the PDF file
                 await FileOpener.open(options);
-                loader.dismiss();
+              
             } catch (error) {
                 loader.dismiss();
                 console.error('Error saving or opening PDF:', error);
