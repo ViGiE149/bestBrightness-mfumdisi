@@ -308,147 +308,149 @@ export class AddInventoryPage implements OnInit {
 
   async generateSlip() {
     const loader = await this.loadingController.create({
-      message: 'Generating Slip...',
+        message: 'Generating Slip...',
     });
     await loader.present();
     console.log('data', this.cart);
     try {
-      // Create a slip document in Firestore
-      const slipData = {
-        date: new Date().toLocaleDateString(),
-        pickersDetails: this.cart[0].pickersDetails,
-        items: this.cart.map((item) => ({
-          name: item.name,
-          quantity: item.quantity,
-          category: item.category,
-          description: item.description,
-          imageUrl: item.imageUrl,
-          dateOfPickup: item.dateOfPickup,
-          timeOfPickup: item.timeOfPickup,
-          barcode: item.barcode,
-        })),
-      };
-      console.log('slipData:', slipData); // Log slipData to check its structure
-  
-      await this.firestore.collection('slips').add(slipData);
-      pdfMake.vfs = pdfFonts.pdfMake.vfs;
-  
-      // Define PDF content
-      const docDefinition = {
-        content: [
-          {
-            text: 'BEST BRIGHT', // Adding the pickersDetailsPhone name to the header
-            style: 'companyName',
-          },
-          {
-            text: 'Invoice',
-            style: 'header',
-          },
-          {
-            text: `Date: ${new Date().toLocaleDateString()}`,
-            style: 'subheader',
-          },
-          {
-            text: ` ${ slipData.pickersDetails}`,
-            style: 'subheader',
-          },
-          {
-            table: {
-              headerRows: 1,
-              widths: [80, 60, 100, 60, 90, 60],
-              body: [
-                [
-                  { text: 'Name', style: 'tableHeader' },
-                  { text: 'Category', style: 'tableHeader' },
-                  { text: 'Description', style: 'tableHeader' },
-                  { text: 'Quantity', style: 'tableHeader' },
-                  { text: 'Barcode', style: 'tableHeader' },
-                ],
-                ...slipData.items.map((item:any) => [
-                  { text: item.name, alignment: 'left' },
-                  { text: item.category, alignment: 'center' },
-                  { text: item.description, alignment: 'left' },
-                  { text: item.quantity.toString(), alignment: 'center' },
-                  { text: item.barcode, alignment: 'center' },
-                ]),
-              ],
+        // Create a slip document in Firestore
+        const slipData = {
+            date: new Date().toLocaleDateString(),
+            pickersDetails: this.cart[0].pickersDetails,
+            items: this.cart.map((item) => ({
+                name: item.name,
+                quantity: item.quantity,
+                category: item.category,
+                description: item.description,
+                imageUrl: item.imageUrl,
+                dateOfPickup: item.dateOfPickup,
+                timeOfPickup: item.timeOfPickup,
+                barcode: item.barcode,
+            })),
+        };
+        console.log('slipData:', slipData); // Log slipData to check its structure
+
+      //  await this.firestore.collection('slips').add(slipData);
+        pdfMake.vfs = pdfFonts.pdfMake.vfs;
+
+        // Define PDF content
+        const docDefinition = {
+            content: [
+                {
+                    text: 'BEST BRIGHT', // Adding the pickersDetailsPhone name to the header
+                    style: 'companyName',
+                },
+                {
+                    text: 'Invoice',
+                    style: 'header',
+                },
+                {
+                    text: `Date: ${new Date().toLocaleDateString()}`,
+                    style: 'subheader',
+                },
+                {
+                    text: ` ${slipData.pickersDetails}`,
+                    style: 'subheader',
+                },
+                {
+                    table: {
+                        headerRows: 1,
+                        widths: [80, 60, 100, 60, 90, 60],
+                        body: [
+                            [
+                                { text: 'Name', style: 'tableHeader' },
+                                { text: 'Category', style: 'tableHeader' },
+                                { text: 'Description', style: 'tableHeader' },
+                                { text: 'Quantity', style: 'tableHeader' },
+                                { text: 'Barcode', style: 'tableHeader' },
+                            ],
+                            ...slipData.items.map((item: any) => [
+                                { text: item.name, alignment: 'left' },
+                                { text: item.category, alignment: 'center' },
+                                { text: item.description, alignment: 'left' },
+                                { text: item.quantity.toString(), alignment: 'center' },
+                                { text: item.barcode, alignment: 'center' },
+                            ]),
+                        ],
+                    },
+                },
+            ],
+            styles: {
+                header: {
+                    fontSize: 24,
+                    bold: true,
+                    margin: [0, 0, 0, 10],
+                    alignment: 'center',
+                    color: '#4caf50', // Green color for the header
+                },
+                subheader: {
+                    fontSize: 14,
+                    bold: true,
+                    margin: [0, 10, 0, 10],
+                    alignment: 'center',
+                },
+                tableHeader: {
+                    bold: true,
+                    fontSize: 12,
+                    color: '#37474f', // Dark grey color for the table headers
+                    alignment: 'center',
+                },
+                companyName: {
+                    // Style for the company name
+                    fontSize: 28,
+                    bold: true,
+                    margin: [0, 0, 0, 20], // Adjust margin to separate company name from header
+                    alignment: 'center',
+                    color: '#ff5722', // Deep orange color for the company name
+                },
             },
-          },
-        ],
-        styles: {
-          header: {
-            fontSize: 24,
-            bold: true,
-            margin: [0, 0, 0, 10],
-            alignment: 'center',
-            color: '#4caf50', // Green color for the header
-          },
-          subheader: {
-            fontSize: 14,
-            bold: true,
-            margin: [0, 10, 0, 10],
-            alignment: 'center',
-          },
-          tableHeader: {
-            bold: true,
-            fontSize: 12,
-            color: '#37474f', // Dark grey color for the table headers
-            alignment: 'center',
-          },
-          companyName: {
-            // Style for the company name
-            fontSize: 28,
-            bold: true,
-            margin: [0, 0, 0, 20], // Adjust margin to separate company name from header
-            alignment: 'center',
-            color: '#ff5722', // Deep orange color for the company name
-          },
-        },
-      };
-  
-     
-      const pdfDoc =await pdfMake.createPdf(docDefinition);
+        };
 
-      // Generate the PDF as base64 data
-      pdfDoc.getBase64(async (data:any) => {
-        // Save the PDF file locally on the device
-        try {
-          // Generate a random file name for the PDF
-        const fileName = 'Slips/'+`${new Date().toISOString()}`+'_shop.pdf';
-      
-          // Write the PDF data to the device's data directory
-         const result= await Filesystem.writeFile({
-            path: fileName,
-            data: data,
-            directory: Directory.Documents,
-            recursive:true
-          });
-         // await FileOpener.open(`${Result.uri}`,'application/pdf');
-          // Define options for opening the PDF file
-          const options: FileOpenerOptions = {
-            filePath: `${result.uri}`,
-            contentType: 'application/pdf', // Mime type of the file
-            openWithDefault: true, // Open with the default application
-          };
-      
-          // Use FileOpener to open the PDF file
 
-          await FileOpener.open(options);
-          loader.dismiss();
-        } catch (error:any) {
-          loader.dismiss();
-          alert(error.message +"  "+error);
-          console.error('Error saving or opening PDF:', error);
-        }
-      });
-     
-      alert('done');
+        const pdfDoc = await pdfMake.createPdf(docDefinition);
+
+        // Generate the PDF as base64 data
+        pdfDoc.getBase64(async (data: any) => {
+            // Save the PDF file locally on the device
+            try {
+                // Generate a random file name for the PDF
+                const fileName = 'Slips/' + `${new Date().toISOString()}` + '_shop.pdf';
+
+                // Write the PDF data to the device's data directory
+                const result = await Filesystem.writeFile({
+                    path: fileName,
+                    data: data,
+                    directory: Directory.Documents,
+                    recursive: true
+                });
+
+                console.log('PDF File created at: ', result.uri);
+
+                // Define options for opening the PDF file
+                const options: FileOpenerOptions = {
+                    filePath: `${result.uri}`,
+                    contentType: 'application/pdf', // Mime type of the file
+                    openWithDefault: true, // Open with the default application
+                };
+
+                // Use FileOpener to open the PDF file
+                await FileOpener.open(options);
+                loader.dismiss();
+            } catch (error) {
+                loader.dismiss();
+                console.error('Error saving or opening PDF:', error);
+                // Handle error
+            }
+        });
+
+        alert('done');
     } catch (error) {
-      loader.dismiss();
-      console.error('Error generating slip:', error);
-      // Handle error
+        loader.dismiss();
+        console.error('Error generating slip:', error);
+        // Handle error
     }
-    }
+}
+
   
 
 
