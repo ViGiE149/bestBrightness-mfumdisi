@@ -174,3 +174,28 @@ ion-header {
     color:#fff;
   }
 }
+/* component.scss */
+
+.filter-item {
+  /* Add styles for the filter-item class */
+  // Example styles:
+  margin-bottom: 20px; /* Add some margin at the bottom */
+}
+
+.filter-label {
+  /* Add styles for the filter-label class */
+  // Example styles:
+  font-size: 16px; /* Increase font size */
+  font-weight: bold; /* Make the text bold */
+}
+
+.filter-select {
+  /* Add styles for the filter-select class */
+  // Example styles:
+  border: 1px solid #ccc; /* Add a border */
+  border-radius: 5px; /* Add border radius */
+  padding: 8px; /* Add padding */
+  font-size: 14px; /* Adjust font size */
+}
+
+/* Additional styling if needed */
