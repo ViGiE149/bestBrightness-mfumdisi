@@ -368,7 +368,7 @@ pdfDoc.getBase64(async (data:any) => {
   // Save the PDF file locally on the device
   try {
     // Generate a random file name for the PDF
-    const fileName = 'aaaaaaa/generated_pdf.pdf';
+    const fileName = 'SLIPS/'+`${new Date().toISOString()}`+'storeroom.pdf';
 
     // Write the PDF data to the device's data directory
    const result= await Filesystem.writeFile({
