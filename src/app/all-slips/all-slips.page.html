@@ -13,7 +13,7 @@
     <div *ngFor="let item of slip.items; let itemIndex = index"  (click)="passTO()">
       <div class="slip">
         <h3>*. {{ item.pickersDetails }}</h3>
-        <p>: {{ slip.date }}</p>
+        <p>: {{ slip.date.toDate() | date: 'yyyy-MM-dd HH:mm  a'}}</p>
       </div>
     </div>
   </ng-container>

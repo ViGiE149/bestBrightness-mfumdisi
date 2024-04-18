@@ -7,7 +7,6 @@ import { AlertController, LoadingController, ToastController } from '@ionic/angu
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 const pdfMake = require('pdfmake/build/pdfmake.js');
-import { PDFDocument, StandardFonts } from 'pdf-lib';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
 import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener';
 
@@ -278,7 +277,7 @@ showCard() {
     
         })),
       };
-      //await this.firestore.collection('slips').add(slipData);
+    await this.firestore.collection('slips').add(slipData);
       pdfMake.vfs = pdfFonts.pdfMake.vfs;
      // Calculate column widths based on content length
 
@@ -362,12 +361,6 @@ const docDefinition = {
 };
 
 
-// const pdfDocGenerator = await pdfMake.createPdf(docDefinition);
-// const blob = await new Promise<Blob>((resolve) => {
-//   pdfDocGenerator.getBlob(resolve);
-// });
-
-
 const pdfDoc =await pdfMake.createPdf(docDefinition);
 
 // Generate the PDF as base64 data
@@ -375,7 +368,7 @@ pdfDoc.getBase64(async (data:any) => {
   // Save the PDF file locally on the device
   try {
     // Generate a random file name for the PDF
-    const fileName = 'aaaaaaa/generated_pdf.pdf';
+  const fileName = 'Slips/'+`${new Date().toISOString()}`+'_storeroom.pdf';
 
     // Write the PDF data to the device's data directory
    const result= await Filesystem.writeFile({
@@ -394,40 +387,14 @@ pdfDoc.getBase64(async (data:any) => {
 
     // Use FileOpener to open the PDF file
     await FileOpener.open(options);
-    alert("blue");
+
   } catch (error:any) {
     alert(error.message +"  "+error);
     console.error('Error saving or opening PDF:', error);
   }
 
-
-
-
-
-
-  
 });
-// Write the Blob to file system
-// await Filesystem.writeFile({
-//   path:`Download/x.pdf`,
-//   data: blob,
-//   directory: Directory.ExternalStorage, // Choose appropriate directory
-//   // Choose appropriate encoding
-// });
-// alert("PDF saved successfully");
-// console.log('PDF saved successfully');
-// // Show a success message or handle according
-// return
-// const cvPdf = await PDFDocument.load(await blob.arrayBuffer());
-// await cvPdf.save();
-// await pdfMake.createPdf(docDefinition).print();
-// await pdfMake.createPdf(docDefinition).download(`${new Date().toISOString()}_Storeroom.pdf`);
-// this.cart=[];
-// alert("done");
-  
-      // Show success toast notification
-      //this.clearFields()
-     // this.presentToast('Slip generated successfully',"success");
+
     } catch (error) {
       console.error('Error generating slip:', error);
       loader.dismiss();
@@ -437,85 +404,6 @@ pdfDoc.getBase64(async (data:any) => {
     }
   
 }
-
-async savePDFToDevice(pdfBase64: string) {
-  try {
-    // Generate a random file name for the PDF
-    const fileName = 'generated_pdf.pdf';
-
-    // Write the PDF data to the device's data directory
-    await Filesystem.writeFile({
-      path: fileName,
-      data: pdfBase64,
-      directory: Directory.Data,
-     
-    });
-
-    // Define options for opening the PDF file
-    const options: FileOpenerOptions = {
-      filePath: `file://${fileName}`,
-      contentType: 'application/pdf', // Mime type of the file
-      openWithDefault: true, // Open with the default application
-    };
-
-    // Use FileOpener to open the PDF file
-    await FileOpener.open(options);
-    alert("blue");
-  } catch (error) {
-    console.error('Error saving or opening PDF:', error);
-  }
-}
-
-
-
-async savePdfToDevice(docDefinition: any, fileName: string) {
-  try {
-    // Generate the PDF
-    const pdfDocGenerator = pdfMake.createPdf(docDefinition);
-    const pdfBase64: string = await this.getPdfBase64(pdfDocGenerator);
-
-    // Convert base64 PDF to Uint8Array
-    const pdfData: any = this.base64ToUint8Array(pdfBase64);
-
-    // Write the PDF to the file system
-    const result = await Filesystem.writeFile({
-      path: fileName,
-      data: pdfData,
-      directory: Directory.Documents,
-      recursive: true // create any missing directories
-    });
-
-    console.log('PDF saved successfully at:', result.uri);
-    alert( 'PDF saved successfully');
-  } catch (error) {
-    console.error('Error saving PDF:', error);
-     alert('Failed to save PDF' );
-  }
-}
-
-private async getPdfBase64(pdfDocGenerator: any): Promise<string> {
-  return new Promise<string>((resolve, reject) => {
-    pdfDocGenerator.getBase64((pdfBase64: string) => {
-      resolve(pdfBase64);
-    });
-  });
-}
-
-private base64ToUint8Array(base64: string): Uint8Array {
-  const binaryString = atob(base64);
-  const length = binaryString.length;
-  const bytes = new Uint8Array(length);
-
-  for (let i = 0; i < length; i++) {
-    bytes[i] = binaryString.charCodeAt(i);
-  }
-
-  return bytes;
-}
-
-
-
-
 
 clearFields() {
   this.itemName = '';

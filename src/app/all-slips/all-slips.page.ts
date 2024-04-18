@@ -23,6 +23,12 @@ showDate(date: string): boolean {
   return false;
 }
 passTO(){}
+convertToDate(timestamp:any): Date {
+  return timestamp.toDate(); // Convert Firestore Timestamp to JavaScript Date
+
+
+}
+
 
 }
 

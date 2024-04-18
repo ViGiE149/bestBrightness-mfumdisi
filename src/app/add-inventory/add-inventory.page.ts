@@ -12,7 +12,7 @@ import {
 import { BarcodeScanner } from '@capacitor-community/barcode-scanner';
 import { debounceTime } from 'rxjs/operators';
 import { Filesystem, Directory, Encoding } from '@capacitor/filesystem';
-import { Browser } from '@capacitor/browser';
+import { FileOpener, FileOpenerOptions } from '@capacitor-community/file-opener';
 
 import * as pdfFonts from 'pdfmake/build/vfs_fonts';
 const pdfMake = require('pdfmake/build/pdfmake.js');
@@ -407,37 +407,51 @@ export class AddInventoryPage implements OnInit {
         },
       };
   
-      await pdfMake.createPdf(docDefinition).download(`${new Date().toISOString()}_Shop.pdf`);
-  
-      loader.dismiss();
+     
+      const pdfDoc =await pdfMake.createPdf(docDefinition);
+
+      // Generate the PDF as base64 data
+      pdfDoc.getBase64(async (data:any) => {
+        // Save the PDF file locally on the device
+        try {
+          // Generate a random file name for the PDF
+        const fileName = 'Slips/'+`${new Date().toISOString()}`+'_shop.pdf';
+      
+          // Write the PDF data to the device's data directory
+         const result= await Filesystem.writeFile({
+            path: fileName,
+            data: data,
+            directory: Directory.Documents,
+            recursive:true
+          });
+         // await FileOpener.open(`${Result.uri}`,'application/pdf');
+          // Define options for opening the PDF file
+          const options: FileOpenerOptions = {
+            filePath: `${result.uri}`,
+            contentType: 'application/pdf', // Mime type of the file
+            openWithDefault: true, // Open with the default application
+          };
+      
+          // Use FileOpener to open the PDF file
+
+          await FileOpener.open(options);
+          loader.dismiss();
+        } catch (error:any) {
+          loader.dismiss();
+          alert(error.message +"  "+error);
+          console.error('Error saving or opening PDF:', error);
+        }
+      });
+     
       alert('done');
     } catch (error) {
       loader.dismiss();
       console.error('Error generating slip:', error);
       // Handle error
     }
-  }
+    }
   
 
-  async savePDFLocally(pdfData: any) {
-    try {
-      // Generate a unique file name
-      const fileName = `Download/invoice_${Date.now()}.pdf`;
-
-      // Write the PDF data to a file
-      const result = await Filesystem.writeFile({
-        path: fileName,
-        data: pdfData,
-        directory: Directory.External, // Choose the directory to save the file
-        encoding: Encoding.UTF8, // Specify encoding (optional)
-      });
-      await Browser.open({ url: result.uri });
-      // Log the file URI where the PDF is saved
-      console.log('PDF saved at:', result.uri);
-    } catch (error) {
-      console.error('Error saving PDF:', error);
-    }
-  }
 
   clearFields() {
     this.itemName = '';
