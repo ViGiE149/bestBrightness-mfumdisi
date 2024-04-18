@@ -253,8 +253,9 @@ showCard() {
 
   async generateSlip() {
 
-    if (!this.cart || this.cart.length === 0) {
+    if ( !this.cart.length) {
       // If cart is null or empty, return or perform desired action
+      this.presentToast("cart ampty", "warning");
       return;
     }
     // If cart is not empty, proceed with further actions

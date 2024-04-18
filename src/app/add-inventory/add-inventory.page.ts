@@ -308,7 +308,9 @@ export class AddInventoryPage implements OnInit {
   }
 
   async generateSlip() {
-    if (!this.cart || this.cart.length === 0) {
+    console.log( this.cart);
+    if ( !this.cart.length) {
+    this.presentToast("cart ampty", "warning");
       // If cart is null or empty, return or perform desired action
       return;
     }
@@ -477,7 +479,7 @@ export class AddInventoryPage implements OnInit {
   async presentToast(message: string, color: string) {
     const toast = await this.ToastController.create({
       message: message,
-      duration: 4000,
+      duration: 3000,
       position: 'top',
       color: color,
     });
