@@ -272,7 +272,6 @@ showCard() {
       // Create a slip document in Firestore
       const slipData = {
         date: new Date(),
- 
         pickersDetailsEmail:this.pickersDetailsEmail,
         pickersDetailsPhone:this.pickersDetailsPhone,
         items: this.cart.map(item => ({

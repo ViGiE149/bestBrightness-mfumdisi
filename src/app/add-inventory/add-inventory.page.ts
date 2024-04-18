@@ -308,7 +308,7 @@ export class AddInventoryPage implements OnInit {
   }
 
   async generateSlip() {
-    console.log( this.cart);
+ 
     if ( !this.cart.length) {
     this.presentToast("cart ampty", "warning");
       // If cart is null or empty, return or perform desired action
