@@ -36,6 +36,8 @@ export class AddInventoryStoreroomPage implements OnInit {
   pickersDetailsPhone:any;
   pickersDetailsEmail:any;
   timestamp:string;
+  company:any;
+
 
 
 
@@ -217,7 +219,8 @@ showCard() {
         pickersDetails : this.pickersDetails,
         pickersDetailsEmail:this.pickersDetailsEmail,
         pickersDetailsPhone:this.pickersDetailsPhone,
-        date:this.timestamp
+        date:this.timestamp,
+        company:  this.company
       };
 
       
@@ -243,7 +246,8 @@ showCard() {
           category: this.itemCategory,
           description: this.itemDescription,
           imageUrl: this.imageUrl || '',
-          quantity: (productData.quantity + this.itemQuantity)
+          quantity: (productData.quantity + this.itemQuantity) ,
+          company:this.company
          });
  
         console.log("updated and added");
@@ -286,6 +290,7 @@ showCard() {
       const slipData = {
         date: this.timestamp,
         location:"storeroom",
+        company:this.company,
         pickersDetailsEmail:this.pickersDetailsEmail,
         pickersDetailsPhone:this.pickersDetailsPhone,
         items: this.cart.map(item => ({
@@ -329,10 +334,15 @@ const docDefinition = {
       text: `${slipData.pickersDetailsPhone}`,
       style: 'subheader'
     },
+
+    {
+      text: `${slipData.company}`,
+      style: 'subheader'
+    },
     {
       table: {
         headerRows: 1,
-        widths: [80, 60, 100, 65, 90, 65], 
+        widths: [80, 80, 100, 80, 90, 80], 
         body: [
           [
             { text: 'Name', style: 'tableHeader' },
@@ -383,8 +393,8 @@ const docDefinition = {
 };
 
 
-const pdfDoc =await pdfMake.createPdf(docDefinition);
-
+const pdfDoc =await pdfMake.createPdf(docDefinition).open();
+return
 // Generate the PDF as base64 data
 pdfDoc.getBase64(async (data:any) => {
   // Save the PDF file locally on the device
