@@ -210,6 +210,18 @@ export class AddInventoryPage implements OnInit {
     // Check if the time is in the past
   }
   async addItem() {
+    const newItem = {
+      name: this.itemName,
+      category: this.itemCategory,
+      description: this.itemDescription,
+      imageUrl: this.imageUrl || '',
+      quantity: this.itemQuantity,
+      pickersDetails: this.pickersDetails,
+      dateOfPickup: this.dateOfPickup,
+      timeOfPickup: this.timeOfPickup,
+      barcode: this.barcode || '',
+      timestamp: this.timestamp,
+    };
     let itemQuantity = 0;
     this.checkBookingDateTime(this.currentDate, this.currentTime);
     const loader = await this.loadingController.create({
@@ -242,6 +254,8 @@ export class AddInventoryPage implements OnInit {
         // Update the quantity of the existing item in the storeroomInventory collection
         const existingItemDoc = existingItemQuery.docs[0];
         const existingItemData: any = existingItemDoc.data();
+        const docId:any=existingItemQuery.docs[0].id;
+
         if (existingItemData.quantity < this.itemQuantity) {
           // Show an alert if the stock is insufficient
           this.presentToast(
@@ -252,13 +266,22 @@ export class AddInventoryPage implements OnInit {
           );
           return;
         }
-        const updatedQuantity = existingItemData.quantity - this.itemQuantity;
+      const updatedQuantity = existingItemData.quantity - this.itemQuantity;
         console.log(existingItemData.quantity);
-        console.log(updatedQuantity);
+       console.log(updatedQuantity);
         itemQuantity = existingItemData.quantity;
         
 
-        await existingItemDoc.ref.update({ quantity: updatedQuantity });
+        //await existingItemDoc.ref.update({ quantity: updatedQuantity });
+
+        await this.firestore.collection('storeroomInventory').doc(docId).update({
+          name: this.itemName,
+          category: this.itemCategory,
+          description: this.itemDescription,
+          imageUrl: this.imageUrl || '',
+          date:this.timestamp,
+          quantity: existingItemData.quantity - this.itemQuantity,
+        });
        //this.cart.push();
         console.log('Storeroom Inventory Updated (Minused)');
       } else {
@@ -276,35 +299,28 @@ export class AddInventoryPage implements OnInit {
         .get();
       if (!existingItemQueryStore.empty) {
         // Update the quantity of the existing item in the storeroomInventory collection
-        const existingItemDoc = existingItemQuery.docs[0];
-        const existingItemData: any = existingItemDoc.data();
-        let updatedQuantity = existingItemData.quantity + this.itemQuantity;
-         updatedQuantity += this.itemQuantity;
-        await existingItemDoc.ref.update({ 
-          name: this.itemName,
-          category: this.itemCategory,
-          quantity: updatedQuantity,
-          description: this.itemDescription,
-          imageUrl: this.imageUrl || '',
-        
-        
+        const existingItemDoc1 = existingItemQueryStore.docs[0];
+        const existingItemData2: any = existingItemDoc1.data();
+        let docId2:any = existingItemQueryStore.docs[0].id;
+     
+        console.log(docId2);
+    this.firestore.collection('inventory').doc(docId2).update({
+         name: this.itemName,
+         category: this.itemCategory,
+         description: this.itemDescription,
+         imageUrl: this.imageUrl || '',
+         quantity: (existingItemData2.quantity + this.itemQuantity)
         });
-      
+
+
+        this.cart.push(newItem);
+        this.clearFields();
         console.log('Shop Inventory Updated (Plused)');
+        return
+     
       }
 
-      const newItem = {
-        name: this.itemName,
-        category: this.itemCategory,
-        description: this.itemDescription,
-        imageUrl: this.imageUrl || '',
-        quantity: this.itemQuantity,
-        pickersDetails: this.pickersDetails,
-        dateOfPickup: this.dateOfPickup,
-        timeOfPickup: this.timeOfPickup,
-        barcode: this.barcode || '',
-        timestamp: this.timestamp,
-      };
+   
       this.cart.push(newItem);
       this.presentToast('Item added to cart', 'successfull');
       await this.firestore.collection('inventory').add(newItem);

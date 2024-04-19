@@ -196,6 +196,7 @@ showCard() {
     const loader = await this.loadingController.create({
       message: 'Adding Inventory...',
     });
+
     await loader.present();
     try {
       if (this.imageBase64) {
@@ -218,6 +219,8 @@ showCard() {
         pickersDetailsPhone:this.pickersDetailsPhone,
         date:this.timestamp
       };
+
+      
       this.cart.push(newItem);
       console.log("test--",this.cart);
       this.presentToast('Item added to cart','success');
@@ -232,18 +235,19 @@ showCard() {
       if (!querySnapshot.empty) {
         // If a product with the entered barcode is found, populate the input fields
         const productData:any = querySnapshot.docs[0].data();
-        const docId:any=querySnapshot.docs[0].id;
+        const docId:any= querySnapshot.docs[0].id;
         console.log(productData.quantity );
-        await this.firestore.collection('storeroomInventory').doc(docId).update({
+      
+        this.firestore.collection('storeroomInventory').doc(docId).update({
           name: this.itemName,
           category: this.itemCategory,
           description: this.itemDescription,
           imageUrl: this.imageUrl || '',
-          date:this.timestamp,
-          quantity:productData.quantity + this.itemQuantity});
-
-        this.clearFields();
+          quantity: (productData.quantity + this.itemQuantity)
+         });
+ 
         console.log("updated and added");
+        this.clearFields();
         return 
    
         // You can similarly populate other input fields here
