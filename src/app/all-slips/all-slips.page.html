@@ -16,9 +16,9 @@
     <div   (click)="passTO(slip)">
       <div class="slip">
         <h3>*. {{ slip.items[slipIndex].pickersDetails }}</h3>
-        <p> {{ slip.loaction }}</p> 
+        <p> {{ slip.location }}</p> 
        <p> {{ slip.date}}</p> 
-       <p> item-types :{{ slip.items[slipIndex].length }}</p> 
+       <p> item-types :{{ slip.items.length }}</p> 
       </div>
     </div>
   </ng-container>
