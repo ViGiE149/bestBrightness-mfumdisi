@@ -14,7 +14,7 @@
           <div class="header">
             <ion-card-header class="animated-header">
               <ion-card-title>
-                <ion-icon name="basket-outline"></ion-icon>
+                <ion-icon name="pricetags-outline"></ion-icon>
                 {{ item.name }}
               </ion-card-title>
             </ion-card-header>
@@ -22,7 +22,7 @@
           <ion-list lines="none">
             <ion-item>
               <ion-label>
-                <ion-icon name="pricetags-outline"></ion-icon>
+                <ion-icon name="options-outline"></ion-icon>
                 Category: {{ item.category }}
               </ion-label>
             </ion-item>
@@ -34,7 +34,7 @@
             </ion-item>
             <ion-item>
               <ion-label>
-                <ion-icon name="cube-outline"></ion-icon>
+                <ion-icon name="expand-outline"></ion-icon>
                 Quantity: {{ item.quantity }}
               </ion-label>
             </ion-item>
@@ -72,7 +72,7 @@
           <ion-icon name="trash-outline"></ion-icon>
           Delete
         </ion-item-option>
-        <ion-item-option (click)="goToUpdate(item.name,item.category,item.description,item.quantity,item.barcode,item.pickersDetails,item.dateOfPickup,item.timeOfPickup ,item.imageUrl )" color="success" >
+        <ion-item-option (click)="goToUpdate(item.name,item.category,item.description,item.quantity,item.barcode,item.pickersDetails,item.dateOfPickup,item.timeOfPickup ,item.imageUrl )" color="primary" >
           <ion-icon name="create-outline"></ion-icon>
           Update
         </ion-item-option>

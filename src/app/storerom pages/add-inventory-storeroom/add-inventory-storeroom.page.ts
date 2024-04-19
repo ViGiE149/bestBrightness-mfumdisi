@@ -35,7 +35,7 @@ export class AddInventoryStoreroomPage implements OnInit {
   phone:any;
   pickersDetailsPhone:any;
   pickersDetailsEmail:any;
-  
+  timestamp:string;
 
 
 
@@ -47,6 +47,7 @@ export class AddInventoryStoreroomPage implements OnInit {
    private  ToastController: ToastController,  private alertController: AlertController,
   
   ) {
+    this.timestamp=new Date().toLocaleString();
     this.currentDate = new Date();
     this.currentTime = this.currentDate.toLocaleTimeString("en-US", {
       hour12: false,
@@ -207,14 +208,15 @@ showCard() {
         description: this.itemDescription,
         imageUrl: this.imageUrl || '',
         quantity: this.itemQuantity,
-        pickersDetails: this.pickersDetails,
         dateOfPickup: this.dateOfPickup,
         timeOfPickup: this.timeOfPickup,
         barcode: this.barcode || '',
-        timestamp: new Date(),
+        timestamp:this.timestamp,
         location:"storeroom",
+        pickersDetails : this.pickersDetails,
         pickersDetailsEmail:this.pickersDetailsEmail,
-        pickersDetailsPhone:this.pickersDetailsPhone
+        pickersDetailsPhone:this.pickersDetailsPhone,
+        date:this.timestamp
       };
       this.cart.push(newItem);
       console.log("test--",this.cart);
@@ -232,7 +234,14 @@ showCard() {
         const productData:any = querySnapshot.docs[0].data();
         const docId:any=querySnapshot.docs[0].id;
         console.log(productData.quantity );
-        await this.firestore.collection('storeroomInventory').doc(docId).update({quantity:productData.quantity + this.itemQuantity});
+        await this.firestore.collection('storeroomInventory').doc(docId).update({
+          name: this.itemName,
+          category: this.itemCategory,
+          description: this.itemDescription,
+          imageUrl: this.imageUrl || '',
+          date:this.timestamp,
+          quantity:productData.quantity + this.itemQuantity});
+
         this.clearFields();
         console.log("updated and added");
         return 
@@ -271,7 +280,7 @@ showCard() {
     try {
       // Create a slip document in Firestore
       const slipData = {
-        date: new Date(),
+        date: this.timestamp,
         pickersDetailsEmail:this.pickersDetailsEmail,
         pickersDetailsPhone:this.pickersDetailsPhone,
         items: this.cart.map(item => ({
@@ -304,7 +313,7 @@ const docDefinition = {
       style: 'header'
     },
     {
-      text: `Date: ${new Date().toLocaleDateString()}`,
+      text: `Date: ${this.timestamp}`,
       style: 'subheader'
     },
     {
@@ -376,7 +385,7 @@ pdfDoc.getBase64(async (data:any) => {
   // Save the PDF file locally on the device
   try {
     // Generate a random file name for the PDF
-    const fileName = `Slips/${Date.now().toLocaleString()}_storeroom.pdf`;
+    const fileName = `Slips/${this.timestamp}_storeroom.pdf`;
 
     // Write the PDF data to the device's data directory
    const result= await Filesystem.writeFile({
@@ -428,9 +437,6 @@ clearFields() {
   this.itemCategory = '';
   this.itemDescription = '';
   this.itemQuantity = 0;
-  this.pickersDetails = '';
-  this.dateOfPickup = '';
-  this.timeOfPickup = '';
   this.barcode = '';
   this.imageBase64 = null;
   this.imageUrl = null;
@@ -458,7 +464,7 @@ checkBookingDateTime(date: any, startTime: any): void {
 async presentToast(message: string,color:string) {
   const toast = await this.ToastController.create({
     message: message,
-    duration: 4000,
+    duration: 3000,
     position: 'middle',
     color:color
   });

@@ -13,7 +13,8 @@
 <ion-content [fullscreen]="true">
 
   <ng-container *ngIf="item$.slip">
-    <h2>{{ item$.slip.date?.toDate() | date: 'yyyy-MM-dd' }}</h2>
+    <h5>{{ item$.slip.date}}</h5>
+    <p>{{item$.slip.date.loaction}}</p>
     <div *ngFor="let item of item$.slip.items; let itemIndex = index">
       <div class="slip">
         <h3>*. {{ item.name }}</h3>

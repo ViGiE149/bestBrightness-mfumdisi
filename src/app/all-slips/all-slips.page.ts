@@ -8,13 +8,16 @@ import { ActivatedRoute, NavigationExtras, Router } from '@angular/router';
   styleUrls: ['./all-slips.page.scss'],
 })
 export class AllSlipsPage implements OnInit {
-  item$: any;
+  itemFatched : any;
   formattedItem: any;
 
-  constructor(private firestore: AngularFirestore, private router: Router) { }
+  constructor(private firestore: AngularFirestore, private router: Router) { 
+    this.getData()
+  }
   prevDate: any;
   ngOnInit() {
-    this.item$ = this.firestore.collection('slips').valueChanges();
+ 
+    console.log(this.itemFatched )
 }
 showDate(date: string): boolean {
   if (!this.prevDate || this.prevDate !== date) {
@@ -23,6 +26,14 @@ showDate(date: string): boolean {
   }
   return false;
 }
+
+getData(){
+  this.firestore.collection('slips').valueChanges().subscribe((data:any[])=>{
+    this.itemFatched =data;
+    console.log( this.itemFatched);
+  })
+}
+
 
 passTO(slip:any){
 

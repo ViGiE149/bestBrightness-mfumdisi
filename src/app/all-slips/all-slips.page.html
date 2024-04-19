@@ -11,13 +11,14 @@
 
 <ion-content [fullscreen]="true">
 
-  <ng-container *ngFor="let slip of item$ | async; let slipIndex = index">
+  <ng-container *ngFor="let slip of itemFatched ; let slipIndex = index">
  
-    <div *ngFor="let item of slip.items; let itemIndex = index"  (click)="passTO(slip)">
+    <div   (click)="passTO(slip)">
       <div class="slip">
-        <h3>*. {{ item.pickersDetails }}</h3>
-        
-        <!-- <p>: {{ slip.date.toDate() | date: 'yyyy-MM-dd HH:mm  a'}}</p> -->
+        <h3>*. {{ slip.items[slipIndex].pickersDetails }}</h3>
+        <p> {{ slip.loaction }}</p> 
+       <p> {{ slip.date}}</p> 
+       <p> item-types :{{ slip.items[slipIndex].length }}</p> 
       </div>
     </div>
   </ng-container>

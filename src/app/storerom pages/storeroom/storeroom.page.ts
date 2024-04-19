@@ -74,7 +74,7 @@ export class StoreroomPage implements OnInit {
         shop:"storeroom"
       },
     };
-    this.router.navigate(['/update'], navi);
+    this.router.navigate(['/update-storeroom'], navi);
   }
 
   deleteItem(item: any) {

@@ -65,7 +65,6 @@ export class SignUpPage implements OnInit {
             {
               name:this.name,
               email: this.email,
-              status: "pending",
               role : this.selectedRole,
             }
           )

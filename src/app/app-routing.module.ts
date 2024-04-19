@@ -95,6 +95,10 @@ const routes: Routes = [
     path: 'all-slips',
     loadChildren: () => import('./all-slips/all-slips.module').then( m => m.AllSlipsPageModule)
   },
+  {
+    path: 'update-storeroom',
+    loadChildren: () => import('./update-storeroom/update-storeroom.module').then( m => m.UpdateStoreroomPageModule)
+  },
 
 
 

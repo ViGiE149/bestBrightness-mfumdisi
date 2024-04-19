@@ -20,13 +20,7 @@ export class SlipsPage implements OnInit {
   ngOnInit() {
     this.item$ = this.firestore.collection('slips').valueChanges();
 }
-showDate(date: string): boolean {
-  if (!this.prevDate || this.prevDate !== date) {
-    this.prevDate = date;
-    return true;
-  }
-  return false;
-}
+
 
 
 async getPassedData() {

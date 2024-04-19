@@ -1,7 +1,7 @@
 import { Component, OnInit, Renderer2 } from '@angular/core';
 import { AngularFireStorage } from '@angular/fire/compat/storage';
 import { AngularFirestore } from '@angular/fire/compat/firestore';
-import { finalize } from 'rxjs/operators';
+import { finalize, timestamp } from 'rxjs/operators';
 import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import {
   AlertController,
@@ -37,6 +37,7 @@ export class AddInventoryPage implements OnInit {
   qrCodeIdentifire: any;
   currentDate: Date;
   currentTime: string;
+  timestamp:any;
 
   // Variable to hold the barcode value
   toggleChecked: boolean = false;
@@ -51,6 +52,7 @@ export class AddInventoryPage implements OnInit {
     private ToastController: ToastController,
     private alertController: AlertController
   ) {
+    this.timestamp=new Date().toLocaleString();
     this.currentDate = new Date();
     this.currentTime = this.currentDate.toLocaleTimeString('en-US', {
       hour12: false,
@@ -257,7 +259,7 @@ export class AddInventoryPage implements OnInit {
         
 
         await existingItemDoc.ref.update({ quantity: updatedQuantity });
-       // this.cart.push();
+       //this.cart.push();
         console.log('Storeroom Inventory Updated (Minused)');
       } else {
         this.presentToast(
@@ -276,11 +278,19 @@ export class AddInventoryPage implements OnInit {
         // Update the quantity of the existing item in the storeroomInventory collection
         const existingItemDoc = existingItemQuery.docs[0];
         const existingItemData: any = existingItemDoc.data();
-        const updatedQuantity = existingItemData.quantity + this.itemQuantity;
-        this.itemQuantity += updatedQuantity;
-        await existingItemDoc.ref.update({ quantity: updatedQuantity });
+        let updatedQuantity = existingItemData.quantity + this.itemQuantity;
+         updatedQuantity += this.itemQuantity;
+        await existingItemDoc.ref.update({ 
+          name: this.itemName,
+          category: this.itemCategory,
+          quantity: updatedQuantity,
+          description: this.itemDescription,
+          imageUrl: this.imageUrl || '',
         
-        console.log('Storeroom Inventory Updated (Plused)');
+        
+        });
+      
+        console.log('Shop Inventory Updated (Plused)');
       }
 
       const newItem = {
@@ -293,7 +303,7 @@ export class AddInventoryPage implements OnInit {
         dateOfPickup: this.dateOfPickup,
         timeOfPickup: this.timeOfPickup,
         barcode: this.barcode || '',
-        timestamp: new Date(),
+        timestamp: this.timestamp,
       };
       this.cart.push(newItem);
       this.presentToast('Item added to cart', 'successfull');
@@ -324,7 +334,7 @@ export class AddInventoryPage implements OnInit {
     try {
         // Create a slip document in Firestore
         const slipData = {
-            date: new Date().toLocaleDateString(),
+            date: this.timestamp,
             pickersDetails: this.cart[0].pickersDetails,
             items: this.cart.map((item) => ({
                 name: item.name,
@@ -335,6 +345,7 @@ export class AddInventoryPage implements OnInit {
                 dateOfPickup: item.dateOfPickup,
                 timeOfPickup: item.timeOfPickup,
                 barcode: item.barcode,
+              
             })),
         };
         console.log('slipData:', slipData); // Log slipData to check its structure
@@ -445,6 +456,7 @@ export class AddInventoryPage implements OnInit {
                 // Use FileOpener to open the PDF file
                 await FileOpener.open(options);
                 this.cart=[];
+          
             } catch (error) {
                 loader.dismiss();
                 console.error('Error saving or opening PDF:', error);
@@ -468,9 +480,6 @@ export class AddInventoryPage implements OnInit {
     this.itemCategory = '';
     this.itemDescription = '';
     this.itemQuantity = 0;
-    this.pickersDetails = '';
-    this.dateOfPickup = '';
-    this.timeOfPickup = '';
     this.barcode = '';
     this.imageBase64 = null;
     this.imageUrl = null;
